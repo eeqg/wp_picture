@@ -1,0 +1,54 @@
+<resources>
+	
+	<!-- Base application theme. -->
+	<style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
+		<!-- Customize your theme here. -->
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
+	
+	<style name="TransparentTheme" parent="Theme.AppCompat.NoActionBar">
+		<!--不设置activity进入和退出动画样式-->
+		<!--<item name="android:windowAnimationStyle">@null</item>-->
+		<!--设置窗口的背景为透明，设置透明背景必须要设置此项-->
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<!--设置窗口的背景是否为半透明，设置透明背景必须要设置此项-->
+		<item name="android:windowIsTranslucent">true</item>
+		<!--设置状态栏的背景为半透明-->
+		<!--<item name="android:windowTranslucentStatus">true</item>-->
+	</style>
+	
+	<style name="PictureViewTheme" parent="TransparentTheme">
+		<item name="android:windowAnimationStyle">@style/PPViewAnimation</item>
+		<!--<item name="android:windowEnterAnimation">@anim/fade_in</item>-->
+		<!--<item name="android:windowExitAnimation">@anim/fade_out</item>-->
+	</style>
+	
+	<style name="PPViewAnimation">
+		<item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+		<item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+	</style>
+	
+	<style name="ViewDividerVertical">
+		<item name="android:layout_width">@dimen/dimenThemeDivider</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:background">@color/colorThemeDivider</item>
+	</style>
+	
+	<style name="ViewDividerHorizontal">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">@dimen/dimenThemeDivider</item>
+		<item name="android:background">@color/colorThemeDivider</item>
+	</style>
+	
+	<style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+		<item name="tabBackground">@color/colorWhite</item>
+		<item name="tabIndicatorColor">#609053</item>
+		<item name="tabIndicatorHeight">2dp</item>
+		<item name="tabIndicatorFullWidth">false</item>
+		<item name="tabSelectedTextColor">@color/colorTextAccent</item>
+		<item name="android:textColor">@color/colorTextPrimary</item>
+		<item name="android:textSize">15sp</item>
+	</style>
+</resources>

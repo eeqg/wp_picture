@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="colorPrimary">#3F51B5</color>
+	<color name="colorPrimaryDark">#303F9F</color>
+	<color name="colorAccent">#FF4081</color>
+	
+	<!-- 重点 -->
+	<color name="colorTextAccent">#D71F2D</color>
+	<!-- 主级 -->
+	<color name="colorTextPrimary">#333333</color>
+	<!-- 次级 -->
+	<color name="colorTextSecondary">#999999</color>
+	<!-- 辅助 -->
+	<color name="colorTextAssisted">#808080</color>
+	<!-- 提示 -->
+	<color name="colorTextHint">#8F8E94</color>
+	<!-- 忽略 -->
+	<color name="colorTextInessential">#BEBEBE</color>
+	
+	<color name="colorThemePrimary">#FFFFFF</color>
+	<color name="colorThemeAccent">#C7A75A</color>
+	<color name="colorThemeDisable">#CCCCCC</color>
+	<color name="colorThemePrice">#F02F2F</color>
+	<!-- 辅助 -->
+	<color name="colorThemeAssisted">#CCCCCC</color>
+	
+	<!-- 分割线 -->
+	<color name="colorThemeDivider">#E5E5E5</color>
+	
+	<color name="colorWhite">#FFFFFFFF</color>
+	
+	<color name="background_tab_pressed">#6633B5E5</color>
+	
+	<color name="custom_shadow_start_color">#44000000</color>
+	<color name="custom_shadow_mid_color">#14000000</color>
+	<color name="custom_shadow_end_color">#00000000</color>
+	
+	<color name="default_background_color">@android:color/transparent</color>
+	<color name="default_progress_color">#33b5e5</color>
+	<color name="default_stroke_color">#33b5e5</color>
+	<color name="default_text_color">#333333</color>
+</resources>

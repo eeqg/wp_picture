@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<!-- 分割线 -->
+	<dimen name="dimenThemeDivider">0.5dp</dimen>
+	<!-- 分割空间 -->
+	<dimen name="dimenThemeSpace">8dp</dimen>
+	
+	<!-- 重点 -->
+	<dimen name="dimenTextAccent">20sp</dimen>
+	<!-- 标明 -->
+	<dimen name="dimenTextMark">18sp</dimen>
+	<!-- 主级 -->
+	<dimen name="dimenTextPrimary">16sp</dimen>
+	<!-- 次级 -->
+	<dimen name="dimenTextSecondary">14sp</dimen>
+	<!-- 辅助 -->
+	<dimen name="dimenTextAssisted">12sp</dimen>
+	
+	<!-- 分割线 -->
+	<dimen name="dimenDivider">1px</dimen>
+	
+	<dimen name="dimenTitleBar">46dp</dimen>
+	
+	<!-- basic -->
+	<dimen name="zero">0dp</dimen>
+	<dimen name="four">4dp</dimen>
+	<dimen name="five">5dp</dimen>
+	<dimen name="six">6dp</dimen>
+	<dimen name="eight">8dp</dimen>
+	<dimen name="nine">9dp</dimen>
+	<dimen name="ten">10dp</dimen>
+	<dimen name="eleven">11dp</dimen>
+	<dimen name="twelve">12dp</dimen>
+	<dimen name="thirteen">13dp</dimen>
+	<dimen name="fourteen">14dp</dimen>
+	<dimen name="fifteen">15dp</dimen>
+	<dimen name="sixteen">16dp</dimen>
+	<dimen name="seventeen">17dp</dimen>
+	<dimen name="eighteen">18dp</dimen>
+	<dimen name="twenty">20dp</dimen>
+	<dimen name="twenty_four">24dp</dimen>
+	<dimen name="twenty_eight">28dp</dimen>
+	<dimen name="thirty_two">32dp</dimen>
+	<dimen name="thirty_eight">38dp</dimen>
+	<dimen name="forty">40dp</dimen>
+	<dimen name="forty_eight">48dp</dimen>
+	<dimen name="fifty_six">56dp</dimen>
+	
+	<!-- basic -->
+	
+	<dimen name="drop_down_list_header_padding_top">12dp</dimen>
+	<dimen name="drop_down_list_header_padding_bottom">15dp</dimen>
+	<dimen name="drop_down_list_header_release_min_distance">20dp</dimen>
+	<dimen name="drop_down_list_header_progress_bar_height">36dp</dimen>
+	<dimen name="drop_down_list_footer_progress_bar_height">36dp</dimen>
+	<dimen name="drop_down_list_footer_button_margin_left">8dp</dimen>
+	<dimen name="drop_down_list_footer_button_height">48dp</dimen>
+	
+	<dimen name="textandiconmargin">10dp</dimen>
+
+</resources>
