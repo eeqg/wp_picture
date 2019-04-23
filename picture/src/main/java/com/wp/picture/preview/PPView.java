@@ -1,8 +1,9 @@
 package com.wp.picture.preview;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 import com.wp.picture.preview.loader.PPViewImageLoader;
 
@@ -52,6 +53,7 @@ public class PPView {
 		private ArrayList<String> pictureUrlList;
 		private int position;
 		private PicturePreview.OnLongClickListener longClickListener;
+		private PicturePreviewDialog previewDialog;
 		
 		public Builder url(String url) {
 			this.pictureUrlList = new ArrayList<>();
@@ -95,6 +97,14 @@ public class PPView {
 			Intent intent = new Intent(activity, PicturePreviewActivity.class);
 			PPView.setConfig(this.buildViewer());
 			activity.startActivityForResult(intent, requestCode);
+		}
+		
+		public void show(AppCompatActivity activity) {
+			if (previewDialog == null) {
+				previewDialog = new PicturePreviewDialog();
+			}
+			PPView.setConfig(this.buildViewer());
+			previewDialog.show(activity.getSupportFragmentManager(), "");
 		}
 		
 		private PPView buildViewer() {

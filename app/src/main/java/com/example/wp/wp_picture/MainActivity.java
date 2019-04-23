@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 		ivSample.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				PPView.build().url(picUrl3).with(MainActivity.this);
+				// PPView.build().url(picUrl3).with(MainActivity.this);
+				PPView.build().url(picUrl3).show(MainActivity.this);
 			}
 		});
 	}
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
 				for (Uri uri : pictureLayout.getPictureList()) {
 					picList.add(uri.toString());
 				}
-				PPView.build().urlList(picList).position(position).with(MainActivity.this);
+				// PPView.build().urlList(picList).position(position).with(MainActivity.this);
+				PPView.build().urlList(picList).position(position).show(MainActivity.this);
 			}
 		});
 	}

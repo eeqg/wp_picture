@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,7 +177,7 @@ public class PicturePreview extends FrameLayout {
 				pictureView.setOnHandleClickListener(new ZoomImageView.OnHandleClickListener() {
 					@Override
 					public void onClick(String url) {
-						// Toast.makeText(getContext(), "onClick--" + url, Toast.LENGTH_LONG).show();
+						Log.d("-----", "ppv--onClick()");
 						if (transformOutListener != null) {
 							transformOutListener.onTransformOut();
 						}
@@ -184,7 +185,7 @@ public class PicturePreview extends FrameLayout {
 					
 					@Override
 					public void onLongClickListener(String url) {
-						// Toast.makeText(getContext(), "onLongClick--" + url, Toast.LENGTH_LONG).show();
+						Log.d("-----", "ppv--onLongClick()");
 						if (config != null && config.longClickListener != null) {
 							config.longClickListener.onLongClick(position, url);
 						}
@@ -193,13 +194,15 @@ public class PicturePreview extends FrameLayout {
 				pictureView.setAlphaChangeListener(new ZoomImageView.OnAlphaChangeListener() {
 					@Override
 					public void onAlphaChange(float alpha) {
-						// Log.d("-----", "alpha = " + alpha);
+						Log.d("-----", "alpha = " + alpha);
 						viewPager.setBackgroundColor(ColorUtils.changeAlpha(Color.BLACK, alpha));
+						tvIndicator.setVisibility(alpha < 1 ? INVISIBLE : VISIBLE);
 					}
 				});
 				pictureView.setTransformOutListener(new ZoomImageView.OnTransformOutListener() {
 					@Override
 					public void onTransformOut() {
+						Log.d("-----", "ppv--onTransformOut()");
 						if (transformOutListener != null) {
 							transformOutListener.onTransformOut();
 						}

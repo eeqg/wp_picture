@@ -200,9 +200,11 @@ public class ZoomImageView extends AppCompatImageView implements
 				// Log.d("-----", "isCheckTopAndBottom = " + isCheckTopAndBottom);
 				// Log.d(TAG, String.format("-----downX = %s, getX = %s, offsetX = %s", downX, event.getX(), offsetX));
 				// Log.d(TAG, String.format("-----downY = %s, getY = %s, offsetY = %s", downY, event.getY(), offsetY));
+				// Log.d(TAG, "-----getScale() = " + getScale());
 				if ((event.getPointerCount() == 1
-						&& !isCheckTopAndBottom)
-						&& (y - mLastY > 0 || isMoved)
+						// && !isCheckTopAndBottom
+						&& getScale() <= initScale)
+					// && (y - mLastY > 0 || isMoved)
 				) {
 					isMoved = true;
 					offsetLeftAndRight((int) offsetX);
@@ -235,6 +237,8 @@ public class ZoomImageView extends AppCompatImageView implements
 						moveToOldPosition();
 					}
 				}
+				//reset
+				isMoved = false;
 				lastPointerCount = 0;
 				break;
 		}
@@ -470,8 +474,8 @@ public class ZoomImageView extends AppCompatImageView implements
 			//缩放
 			float scale = getScale();
 			float scaleFactor = detector.getScaleFactor();
-			// android.util.Log.d("test_wp", TAG + "--onScale()-0-scale=" + scale);
-			// android.util.Log.d("test_wp", TAG + "--onScale()-0-scaleFactor=" + scaleFactor);
+			// android.util.Log.d(TAG, "--onScale()-0-scale=" + scale);
+			// android.util.Log.d(TAG, "--onScale()-0-scaleFactor=" + scaleFactor);
 			
 			if (getDrawable() == null) {
 				return true;
@@ -552,11 +556,11 @@ public class ZoomImageView extends AppCompatImageView implements
 		
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
-			// Log.d(TAG, "-----onSingleTapConfirmed-----");
+			Log.d(TAG, "-----onSingleTapConfirmed-----isMoved =" + isMoved);
 			if (!isMoved && onHandleClickListener != null) {
 				onHandleClickListener.onClick(getImageUrl());
 			}
-			return super.onSingleTapConfirmed(e);
+			return true;
 		}
 		
 		@Override
@@ -568,7 +572,7 @@ public class ZoomImageView extends AppCompatImageView implements
 		@Override
 		public void onLongPress(MotionEvent e) {
 			super.onLongPress(e);
-			// Log.d(TAG, "-----onLongPress-----");
+			Log.d(TAG, "-----onLongPress-----");
 			if (!isMoved && onHandleClickListener != null) {
 				onHandleClickListener.onLongClickListener(getImageUrl());
 			}
