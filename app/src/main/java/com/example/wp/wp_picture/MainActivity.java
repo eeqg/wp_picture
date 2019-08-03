@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 	private final String picUrl1 = "http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg";
 	private final String picUrl2 = "http://img2.woyaogexing.com/2018/01/25/f5d815584c61d376!500x500.jpg";
 	private final String picUrl3 = "http://img2.woyaogexing.com/2018/01/25/991349aa8c98c502!500x500.jpg";
+	private final String picUrl4 = "https://img.alicdn.com/bao/uploaded/i4/642874349/O1CN01XoCmT91hzsxinFho2_!!642874349.jpg";
 	
 	private ImageView ivSample;
 	private PictureLayout pictureLayout;
@@ -53,14 +54,14 @@ public class MainActivity extends AppCompatActivity {
 		PictureLayout.setImageLoader(new PictureLayoutImageLoader());
 	}
 	
+	private void initPicturePreview() {
+		PPView.setImageLoader(new PPViewGlideLoader());
+	}
+	
 	private void initBoxing() {
 		IBoxingMediaLoader loader = new BoxingGlideLoader();
 		BoxingMediaLoader.getInstance().init(loader);
 		BoxingCrop.getInstance().init(new BoxingUcrop());
-	}
-	
-	private void initPicturePreview() {
-		PPView.setImageLoader(new PPViewGlideLoader());
 	}
 	
 	private void initView() {
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				// PPView.build().url(picUrl3).with(MainActivity.this);
-				PPView.build().url(picUrl3).show(MainActivity.this);
+				PPView.build().url(picUrl4).show(MainActivity.this);
 			}
 		});
 	}
