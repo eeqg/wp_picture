@@ -1,40 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:gravity="center_horizontal"
-	android:padding="8dp"
-	android:orientation="vertical"
-	tools:context=".MainActivity">
+	android:layout_height="match_parent">
 	
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="10dp"
-		android:layout_gravity="center_horizontal"
-		android:text="sample!"/>
-	
-	<ImageView
-		android:id="@+id/ivSample"
-		android:layout_width="200dp"
-		android:layout_height="200dp"
-		android:layout_marginTop="15dp"/>
-	
-	<com.wp.picture.picker.PictureLayout
-		android:id="@+id/pictureLayout"
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="20dp"
-		app:layout_constraintTop_toTopOf="parent"
-		app:picture_editDrawable="@mipmap/ic_del"
-		app:picture_horizontalPadding="5dp"
-		app:picture_insertBackground="@mipmap/ic_tianjiatupian"
-		app:picture_maxCount="10"
-		app:picture_pictureRatio="1"
-		app:picture_rowCount="5"
-		app:picture_supportInsert="true"
-		app:picture_verticalPadding="5dp"/>
-</LinearLayout>
+		android:layout_height="match_parent"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		android:padding="8dp"
+		tools:context=".MainActivity">
+		
+		
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginTop="10dp"
+			android:text="sample!"/>
+		
+		<ImageView
+			android:id="@+id/ivSample"
+			android:layout_width="200dp"
+			android:layout_height="200dp"
+			android:layout_marginTop="15dp"/>
+		
+		<com.wp.picture.picker.PictureLayout
+			android:id="@+id/pictureLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			app:layout_constraintTop_toTopOf="parent"
+			app:picture_editDrawable="@mipmap/ic_del"
+			app:picture_horizontalPadding="5dp"
+			app:picture_insertBackground="@mipmap/ic_tianjiatupian"
+			app:picture_maxCount="10"
+			app:picture_pictureRatio="1"
+			app:picture_rowCount="5"
+			app:picture_supportInsert="true"
+			app:picture_verticalPadding="5dp"/>
+		
+		<com.wp.picture.ninegrid.NineGridView
+			android:id="@+id/nineGridView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"/>
+	</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

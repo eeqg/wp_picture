@@ -17,12 +17,17 @@ import com.example.wp.wp_picture.loder.BoxingGlideLoader;
 import com.example.wp.wp_picture.loder.GlideImageLoader;
 import com.example.wp.wp_picture.loder.PPViewGlideLoader;
 import com.example.wp.wp_picture.loder.PictureLayoutImageLoader;
+import com.example.wp.wp_picture.ninegrid.ImageInfoBean;
+import com.example.wp.wp_picture.ninegrid.NineGridImageAdapter;
+import com.wp.picture.ninegrid.NineGridView;
 import com.wp.picture.picker.BoxingUcrop;
 import com.wp.picture.picker.Picker;
 import com.wp.picture.picker.PictureLayout;
 import com.wp.picture.preview.PPView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 		
 		initView();
 		observePictureLayout();
+		observeNineGridView();
 	}
 	
 	private void initPictureLayout() {
@@ -103,6 +109,20 @@ public class MainActivity extends AppCompatActivity {
 				PPView.build().urlList(picList).position(position).show(MainActivity.this);
 			}
 		});
+	}
+	
+	private void observeNineGridView() {
+		NineGridView nineGridView = findViewById(R.id.nineGridView);
+		String[] stringArray = getResources().getStringArray(R.array.test_num_url);
+		List<String> images = Arrays.asList(stringArray);
+		ArrayList<ImageInfoBean> imageInfo = new ArrayList<>();
+		for (int i = 0; i < images.size(); i++) {
+			ImageInfoBean info = new ImageInfoBean();
+			info.imgUrl = images.get(i);
+			imageInfo.add(info);
+			// break;
+		}
+		nineGridView.setAdapter(new NineGridImageAdapter(this, imageInfo));
 	}
 	
 	@Override

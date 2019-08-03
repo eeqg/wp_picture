@@ -95,7 +95,9 @@ public class NineGridView extends ViewGroup {
 				child.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
 						MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
 			} else {
-				child.measure(widthMeasureSpec, heightMeasureSpec);
+				// child.measure(widthMeasureSpec, heightMeasureSpec);
+				child.measure(MeasureSpec.makeMeasureSpec(gridWidth, MeasureSpec.EXACTLY),
+						MeasureSpec.makeMeasureSpec(gridHeight, MeasureSpec.EXACTLY));
 			}
 		}
 		

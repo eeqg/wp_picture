@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	
+	<ImageView
+		android:id="@+id/ivPicture"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:scaleType="centerInside"
+		android:src="@mipmap/ic_placeholder"/>
+	
+	<View
+		android:id="@+id/viewMask"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:background="#30000000"
+		android:visibility="gone"
+		tools:visibility="visible"/>
+	
+	<ImageView
+		android:id="@+id/ivPlay"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:src="@drawable/ic_play_circle_outline_black_24dp"
+		android:visibility="gone"
+		tools:visibility="visible"/>
+	
+	<TextView
+		android:id="@+id/tvMoreNum"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="+ 6"
+		android:textColor="@color/colorWhite"
+		android:textSize="@dimen/dimenTextPrimary"
+		android:visibility="gone"
+		tools:visibility="visible"/>
+</FrameLayout>
