@@ -16,6 +16,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
@@ -53,7 +54,7 @@ public class ZoomImageView extends AppCompatImageView implements
 	private int lastPointerCount;
 	private boolean isCheckLeftAndRight;
 	private boolean isCheckTopAndBottom;
-	private double mTouchSlop;
+	private double mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
 	private float SCALE_MID = 2.0f;
 	private boolean isAutoScale;
 	private OnHandleClickListener onHandleClickListener;
@@ -202,6 +203,7 @@ public class ZoomImageView extends AppCompatImageView implements
 				// Log.d(TAG, String.format("-----downY = %s, getY = %s, offsetY = %s", downY, event.getY(), offsetY));
 				// Log.d(TAG, "-----getScale() = " + getScale());
 				if ((event.getPointerCount() == 1
+						&& !PPView.getConfig().disableTransform
 						// && !isCheckTopAndBottom
 						&& getScale() <= initScale)
 					// && (y - mLastY > 0 || isMoved)

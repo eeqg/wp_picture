@@ -30,7 +30,7 @@ public abstract class NineGridViewAdapter<T> implements Serializable {
 	
 	protected abstract View onCreateView(Context context);
 	
-	protected abstract void onBindView(Context context, ViewGroup parent, int position);
+	protected abstract void onBindView(NineGridView parent, ViewGroup itemView, int position);
 	
 	public List<T> getImageInfo() {
 		return imageInfo;

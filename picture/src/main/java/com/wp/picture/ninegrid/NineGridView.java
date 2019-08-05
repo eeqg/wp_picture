@@ -120,7 +120,7 @@ public class NineGridView extends ViewGroup {
 			childrenView.layout(left, top, right, bottom);
 			
 			if (mAdapter != null) {
-				mAdapter.onBindView(getContext(), childrenView, i);
+				mAdapter.onBindView(NineGridView.this, childrenView, i);
 			}
 		}
 	}

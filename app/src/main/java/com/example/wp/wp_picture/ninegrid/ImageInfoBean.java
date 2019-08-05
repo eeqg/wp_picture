@@ -5,4 +5,6 @@ package com.example.wp.wp_picture.ninegrid;
  */
 public class ImageInfoBean {
 	public String imgUrl;
+	public boolean isVideo;
+	public String videoUrl;
 }

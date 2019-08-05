@@ -23,6 +23,7 @@ public class PPView {
 	public int pageLayout = -1;
 	public ArrayList<String> pictureUrlList;
 	public int position;
+	public boolean disableTransform;
 	public PicturePreview.OnLongClickListener longClickListener;
 	
 	public PPView() {
@@ -52,6 +53,7 @@ public class PPView {
 		private int pageLayout = -1;
 		private ArrayList<String> pictureUrlList;
 		private int position;
+		public boolean disableTransform;
 		private PicturePreview.OnLongClickListener longClickListener;
 		private PicturePreviewDialog previewDialog;
 		
@@ -73,6 +75,11 @@ public class PPView {
 		
 		public Builder pageLayout(int pageLayout) {
 			this.pageLayout = pageLayout;
+			return this;
+		}
+		
+		public Builder disableTransform(boolean disable) {
+			this.disableTransform = disable;
 			return this;
 		}
 		
@@ -113,6 +120,7 @@ public class PPView {
 			ppView.position = this.position;
 			ppView.pageLayout = this.pageLayout;
 			ppView.longClickListener = this.longClickListener;
+			ppView.disableTransform = this.disableTransform;
 			return ppView;
 		}
 	}

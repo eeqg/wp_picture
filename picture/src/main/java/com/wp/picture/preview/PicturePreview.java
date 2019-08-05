@@ -60,31 +60,31 @@ public class PicturePreview extends FrameLayout {
 		ppvPagerAdapter = new PpvPagerAdapter(context);
 		viewPager.setAdapter(ppvPagerAdapter);
 		
-		viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
-			@Override
-			public void transformPage(View page, float position) {
-				int pageWidth = page.getWidth();
-				int pageHeight = page.getHeight();
-				if (position < -1.0F) {
-					page.setAlpha(0.0F);
-				} else if (position <= 1.0F) {
-					float scaleFactor = Math.max(0.85F, 1.0F - Math.abs(position));
-					float verticalMargin = (float) pageHeight * (1.0F - scaleFactor) / 2.0F;
-					float horizontalMargin = (float) pageWidth * (1.0F - scaleFactor) / 2.0F;
-					if (position < 0.0F) {
-						page.setTranslationX(horizontalMargin - verticalMargin / 2.0F);
-					} else {
-						page.setTranslationY(-horizontalMargin + verticalMargin / 2.0F);
-					}
-					
-					page.setScaleX(scaleFactor);
-					page.setScaleY(scaleFactor);
-					page.setAlpha(0.5F + (scaleFactor - 0.85F) / 0.14999998F * 0.5F);
-				} else {
-					page.setAlpha(0.0F);
-				}
-			}
-		});
+		// viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+		// 	@Override
+		// 	public void transformPage(View page, float position) {
+		// 		int pageWidth = page.getWidth();
+		// 		int pageHeight = page.getHeight();
+		// 		if (position < -1.0F) {
+		// 			page.setAlpha(0.0F);
+		// 		} else if (position <= 1.0F) {
+		// 			float scaleFactor = Math.max(0.85F, 1.0F - Math.abs(position));
+		// 			float verticalMargin = (float) pageHeight * (1.0F - scaleFactor) / 2.0F;
+		// 			float horizontalMargin = (float) pageWidth * (1.0F - scaleFactor) / 2.0F;
+		// 			if (position < 0.0F) {
+		// 				page.setTranslationX(horizontalMargin - verticalMargin / 2.0F);
+		// 			} else {
+		// 				page.setTranslationY(-horizontalMargin + verticalMargin / 2.0F);
+		// 			}
+		//
+		// 			page.setScaleX(scaleFactor);
+		// 			page.setScaleY(scaleFactor);
+		// 			page.setAlpha(0.5F + (scaleFactor - 0.85F) / 0.14999998F * 0.5F);
+		// 		} else {
+		// 			page.setAlpha(0.0F);
+		// 		}
+		// 	}
+		// });
 		
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override

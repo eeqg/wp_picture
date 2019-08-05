@@ -1,10 +1,13 @@
 package com.example.wp.wp_picture.ninegrid;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.wp.wp_picture.R;
 import com.example.wp.wp_picture.loder.GlideImageLoader;
@@ -36,24 +39,27 @@ public class NineGridImageAdapter extends NineGridViewAdapter<ImageInfoBean> {
 		return View.inflate(context, R.layout.item_nine_grid, null);
 	}
 	
+	@SuppressLint("DefaultLocale")
 	@Override
-	protected void onBindView(Context context, ViewGroup parent, int position) {
-		// LogUtils.d("-----onBindView()--" + position);
-		ImageView ivPicture = parent.findViewById(R.id.ivPicture);
+	protected void onBindView(NineGridView parent, ViewGroup itemView, int position) {
+		Log.d("picture", "-----onBindView()--" + position);
+		ImageView ivPicture = itemView.findViewById(R.id.ivPicture);
 		ImageInfoBean imageInfoBean = getImageInfo().get(position);
-		// LogUtils.d("-----onBindView()--" + imageInfoBean.imgUrl);
+		Log.d("picture", "-----onBindView()--" + imageInfoBean.imgUrl);
 		GlideImageLoader.getInstance().load(ivPicture, imageInfoBean.imgUrl);
 		
-		View maskerView = parent.findViewById(R.id.viewMask);
-		maskerView.setVisibility(position == 0 || position == 8 ? View.VISIBLE : View.GONE);
-		View tvMoreNum = parent.findViewById(R.id.tvMoreNum);
-		tvMoreNum.setVisibility(position == 8 ? View.VISIBLE : View.GONE);
-		View ivPlay = parent.findViewById(R.id.ivPlay);
-		ivPlay.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
+		boolean hasMore = position == 8 && getImageInfo().size() > 9;
+		View maskerView = itemView.findViewById(R.id.viewMask);
+		maskerView.setVisibility(hasMore || imageInfoBean.isVideo ? View.VISIBLE : View.GONE);
+		TextView tvMoreNum = itemView.findViewById(R.id.tvMoreNum);
+		tvMoreNum.setVisibility(hasMore ? View.VISIBLE : View.GONE);
+		tvMoreNum.setText(String.format("+ %d", getImageInfo().size() - parent.getMaxSize()));
+		View ivPlay = itemView.findViewById(R.id.ivPlay);
+		ivPlay.setVisibility(imageInfoBean.isVideo ? View.VISIBLE : View.GONE);
 	}
 	
 	@Override
 	protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List imageInfo) {
-		PPView.build().urlList(imgList).position(index).show(activity);
+		PPView.build().urlList(imgList).disableTransform(false).position(index).show(activity);
 	}
 }
