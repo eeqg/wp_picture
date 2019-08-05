@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.wp.picture.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class PictureLayout extends ViewGroup {
@@ -249,6 +250,7 @@ public class PictureLayout extends ViewGroup {
 		}
 		this.supportInsert = supportInsert;
 		resetInsertView();
+		resetContentView(0);
 	}
 	
 	
@@ -373,6 +375,23 @@ public class PictureLayout extends ViewGroup {
 	 * @param pictureUriList 图片地址列表
 	 */
 	public void addPictureUri(ArrayList<Uri> pictureUriList) {
+		if (pictureUriList == null) {
+			return;
+		}
+		for (Uri pictureUri : pictureUriList) {
+			if (this.pictureList.size() >= this.maxCount) {
+				break;
+			}
+			addPictureUri(pictureUri);
+		}
+	}
+	
+	/**
+	 * 添加图片地址列表(当添加的图片数量大于最多图片数量,过滤掉多余的图片)
+	 *
+	 * @param pictureUriList 图片地址列表
+	 */
+	public void addPictureUri(List<Uri> pictureUriList) {
 		if (pictureUriList == null) {
 			return;
 		}
@@ -634,6 +653,8 @@ public class PictureLayout extends ViewGroup {
 				}
 			}
 		});
+		
+		editView.setVisibility(supportInsert ? VISIBLE : GONE);
 	}
 	
 	/**
