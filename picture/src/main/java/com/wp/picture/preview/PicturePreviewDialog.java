@@ -50,6 +50,8 @@ public class PicturePreviewDialog extends DialogFragment {
 			Window window = dialog.getWindow();
 			if (window != null) {
 				//全屏
+				window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+						WindowManager.LayoutParams.FLAG_FULLSCREEN);
 				int width = ViewGroup.LayoutParams.MATCH_PARENT;
 				int height = ViewGroup.LayoutParams.MATCH_PARENT;
 				window.setLayout(width, height);
