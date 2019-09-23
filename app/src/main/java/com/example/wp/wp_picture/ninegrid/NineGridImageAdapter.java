@@ -2,10 +2,13 @@ package com.example.wp.wp_picture.ninegrid;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +63,15 @@ public class NineGridImageAdapter extends NineGridViewAdapter<ImageInfoBean> {
 	
 	@Override
 	protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List imageInfo) {
-		PPView.build().urlList(imgList).disableTransform(false).position(index).show(activity);
+		ImageInfoBean imageInfoBean = (ImageInfoBean) imageInfo.get(index);
+		if (imageInfoBean.isVideo) {
+			String extension = MimeTypeMap.getFileExtensionFromUrl(imageInfoBean.videoUrl);
+			String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+			Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+			mediaIntent.setDataAndType(Uri.parse(imageInfoBean.videoUrl), mimeType);
+			context.startActivity(mediaIntent);
+		} else {
+			PPView.build().urlList(imgList).disableTransform(true).position(index).show(activity);
+		}
 	}
 }

@@ -15,7 +15,7 @@
  *
  */
 
-package com.wp.picture.picker;
+package com.example.wp.wp_picture.picker;
 
 import android.content.Context;
 import android.content.Intent;

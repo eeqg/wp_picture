@@ -20,13 +20,21 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:layout_marginTop="10dp"
-			android:text="sample!"/>
+			android:text="sample!" />
 		
 		<ImageView
 			android:id="@+id/ivSample"
 			android:layout_width="200dp"
 			android:layout_height="200dp"
-			android:layout_marginTop="15dp"/>
+			android:layout_marginTop="15dp" />
+		
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:background="#30808080"
+			android:paddingTop="10dp"
+			android:text="PictureLayout" />
 		
 		<com.wp.picture.picker.PictureLayout
 			android:id="@+id/pictureLayout"
@@ -41,12 +49,60 @@
 			app:picture_pictureRatio="1"
 			app:picture_rowCount="5"
 			app:picture_supportInsert="true"
-			app:picture_verticalPadding="5dp"/>
+			app:picture_verticalPadding="5dp" />
+		
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:background="#30808080"
+			android:paddingTop="10dp"
+			android:text="NineGridView" />
 		
 		<com.wp.picture.ninegrid.NineGridView
 			android:id="@+id/nineGridView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"/>
+			android:layout_marginTop="20dp" />
+		
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:background="#30808080"
+			android:paddingTop="10dp"
+			android:text="banner" />
+		
+		<com.wp.picture.banner.Banner
+			android:id="@+id/banner"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			app:banner_auto_play="true"
+			app:banner_interval="3000"
+			app:banner_loop="true"
+			app:height_ratio="0.436">
+			
+			<com.wp.picture.banner.IndicatorLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|end"
+				android:layout_marginEnd="12dp"
+				android:layout_marginRight="12dp"
+				android:layout_marginBottom="12dp"
+				android:background="@drawable/bg_transparent_50_r10"
+				android:gravity="center"
+				android:paddingLeft="5dp"
+				android:paddingRight="5dp"
+				app:il_indicator_height="5dp"
+				app:il_indicator_margin="3dp"
+				app:il_indicator_selected="@color/colorAccent"
+				app:il_indicator_unselected="@color/colorWhite"
+				app:il_indicator_width="5dp" />
+		</com.wp.picture.banner.Banner>
+		
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="38dp" />
 	</LinearLayout>
 </android.support.v4.widget.NestedScrollView>

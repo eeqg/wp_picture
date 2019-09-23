@@ -96,4 +96,45 @@
 			<enum name="grid" value="1"/>
 		</attr>
 	</declare-styleable>
+	
+	<declare-styleable name="Banner">
+		<attr name="banner_interval" format="integer"/>
+		<attr name="banner_auto_play" format="boolean"/>
+		<attr name="banner_loop" format="boolean"/>
+		<attr name="height_ratio" format="float"/>
+		<attr name="banner_orientation" format="enum">
+			<enum name="horizontal" value="0"/>
+			<enum name="vertical" value="1"/>
+		</attr>
+	</declare-styleable>
+	
+	<declare-styleable name="IndicatorLayout">
+		<attr name="il_indicator_width" format="dimension"/>
+		<attr name="il_indicator_height" format="dimension"/>
+		<attr name="il_indicator_margin" format="dimension"/>
+		<attr name="il_indicator_selected" format="color|reference"/>
+		<attr name="il_indicator_unselected" format="color|reference"/>
+		<attr name="il_indicator_flow" format="boolean"/>
+		<attr name="il_indicator_shape" format="enum">
+			<enum name="circular" value="0"/>
+			<enum name="rectangle" value="1"/>
+		</attr>
+	</declare-styleable>
+	
+	<declare-styleable name="RatioImageView">
+		<!--宽度是否根据src图片的比例来测量（高度已知）-->
+		<attr name="is_width_fix_drawable_size_ratio" format="boolean"/>
+		<!--高度是否根据src图片的比例来测量（宽度已知）-->
+		<attr name="is_height_fix_drawable_size_ratio" format="boolean"/>
+		<!-- 高度设置，参考宽度，如0.5 , 表示 高度＝宽度×０.5 -->
+		<attr name="height_to_width_ratio" format="float"/>
+		<!-- 宽度设置，参考高度，如0.5 , 表示 宽度＝高度×０.5 -->
+		<attr name="width_to_height_ratio" format="float"/>
+		
+		<attr name="round_radius" format="dimension"/>
+		<attr name="left_top_radius" format="dimension"/>
+		<attr name="right_top_radius" format="dimension"/>
+		<attr name="right_bottom_radius" format="dimension"/>
+		<attr name="left_bottom_radius" format="dimension"/>
+	</declare-styleable>
 </resources>

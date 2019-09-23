@@ -1,12 +1,16 @@
 package com.example.wp.wp_picture;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.BoxingCrop;
@@ -19,14 +23,20 @@ import com.example.wp.wp_picture.loder.PPViewGlideLoader;
 import com.example.wp.wp_picture.loder.PictureLayoutImageLoader;
 import com.example.wp.wp_picture.ninegrid.ImageInfoBean;
 import com.example.wp.wp_picture.ninegrid.NineGridImageAdapter;
+import com.wp.picture.banner.Banner;
+import com.wp.picture.banner.callback.BindViewCallBack;
+import com.wp.picture.banner.callback.CreateViewCaller;
+import com.wp.picture.banner.callback.OnClickBannerListener;
+import com.wp.picture.banner.core.BaseBanner;
 import com.wp.picture.ninegrid.NineGridView;
-import com.wp.picture.picker.BoxingUcrop;
-import com.wp.picture.picker.Picker;
+import com.example.wp.wp_picture.picker.BoxingUcrop;
+import com.example.wp.wp_picture.picker.PicturePicker;
 import com.wp.picture.picker.PictureLayout;
 import com.wp.picture.preview.PPView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 		initView();
 		observePictureLayout();
 		observeNineGridView();
+		
+		observeBanner();
 	}
 	
 	private void initPictureLayout() {
@@ -89,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onInsert() {
 				// pictureLayout.addPictureUrl("http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg");
-				Picker.pickMulti(MainActivity.this, CODE_PICK_MULTI,
+				PicturePicker.pickMulti(MainActivity.this, CODE_PICK_MULTI,
 						pictureLayout.getMaxCount() - pictureLayout.size());
 			}
 			
@@ -131,6 +143,33 @@ public class MainActivity extends AppCompatActivity {
 		info0.videoUrl = "https://cloud.video.taobao.com/play/u/2683201295/p/2/e/6/t/1/226176442207.mp4?appKey=38829";
 		imageInfo.add(0, info0);
 		nineGridView.setAdapter(new NineGridImageAdapter(this, imageInfo));
+	}
+	
+	private void observeBanner() {
+		Banner banner = findViewById(R.id.banner);
+		String[] stringArray = getResources().getStringArray(R.array.url4);
+		List<String> images = Arrays.asList(stringArray);
+		banner.setViewIndex(BaseBanner.VERTICAL)
+				.createView(CreateViewCaller.build())
+				.bindView(new BindViewCallBack<FrameLayout, String>() {
+					@Override
+					public void bindView(FrameLayout imageRootView, String data, int position) {
+						FrameLayout view = (FrameLayout) CreateViewCaller.findFrameLayout(imageRootView);
+						view.removeAllViews();
+						View bannerRooter = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_banner_index, null);
+						view.addView(bannerRooter);
+						ImageView ivBanner = bannerRooter.findViewById(R.id.ivBanner);
+						GlideImageLoader.getInstance().load(ivBanner, data);
+					}
+				})
+				.setOnClickBannerListener(new OnClickBannerListener() {
+					@Override
+					public void onClickBanner(View view, Object data, int position) {
+						Toast.makeText(getApplicationContext(), "position: " + position, Toast.LENGTH_SHORT).show();
+						
+					}
+				})
+				.execute(images);
 	}
 	
 	@Override

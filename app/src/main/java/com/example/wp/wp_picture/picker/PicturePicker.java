@@ -1,4 +1,4 @@
-package com.wp.picture.picker;
+package com.example.wp.wp_picture.picker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.config.BoxingCropOption;
 import com.bilibili.boxing.utils.BoxingFileHelper;
 import com.bilibili.boxing_impl.ui.BoxingActivity;
-import com.wp.picture.R;
+import com.example.wp.wp_picture.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Created by wp on 2019/4/10.
  */
-public class Picker {
+public class PicturePicker {
 	
 	public static void pickSingle(Activity activity, int requestCode) {
 		BoxingConfig singleImgConfig = new BoxingConfig(BoxingConfig.Mode.SINGLE_IMG)

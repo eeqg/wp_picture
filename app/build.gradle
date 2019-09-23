@@ -31,4 +31,15 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'jp.wasabeef:glide-transformations:4.0.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    
+    //boxing
+    api "com.bilibili:boxing:1.0.4"
+    api "com.bilibili:boxing-impl:1.0.4"
+    //ucrop
+    api "com.github.yalantis:ucrop:2.2.3"
+    implementation('com.chensl.rotatephotoview:rotatephotoview:1.0.5') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
 }

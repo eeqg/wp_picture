@@ -34,14 +34,4 @@ dependencies {
 	implementation(rootProject.ext.libAppcompatV7)
 	implementation(rootProject.ext.libDesign)
 	
-	//boxing
-	api "com.bilibili:boxing:1.0.4"
-	api "com.bilibili:boxing-impl:1.0.4"
-	//ucrop
-	api "com.github.yalantis:ucrop:2.2.3"
-	implementation('com.chensl.rotatephotoview:rotatephotoview:1.0.5') {
-		exclude group: 'com.android.support', module: 'appcompat'
-		exclude group: 'com.android.support', module: 'support-v4'
-		exclude module: 'recyclerview-v7'
-	}
 }
