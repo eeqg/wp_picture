@@ -16,4 +16,6 @@
 	<!--pictureLayout-->
 	<item name="picture_view_id" type="id"/>
 	<!--pictureLayout-->
+	
+	<item name="common_view_pager_container" type="id"/>
 </resources>

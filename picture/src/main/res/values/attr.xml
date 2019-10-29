@@ -143,4 +143,9 @@
 		<attr name="border_inside_color" format="color"/>
 		<attr name="border_outside_color" format="color"/>
 	</declare-styleable>
+	
+	<declare-styleable name="TagLayoutView">
+		<attr name="tag_tag_space" format="dimension"/>
+		<attr name="tag_row_space" format="dimension"/>
+	</declare-styleable>
 </resources>
