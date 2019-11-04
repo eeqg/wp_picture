@@ -101,6 +101,19 @@
 				app:il_indicator_width="5dp" />
 		</com.wp.picture.banner.Banner>
 		
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:background="#30808080"
+			android:paddingTop="10dp"
+			android:text="video" />
+		
+		<com.wp.picture.video.SimpleVideoView
+			android:id="@+id/simpleVideo"
+			android:layout_width="match_parent"
+			android:layout_height="200dp" />
+		
 		<View
 			android:layout_width="match_parent"
 			android:layout_height="38dp" />

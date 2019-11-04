@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	
+	<ImageView
+		android:id="@+id/ivThumb"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:src="#80000000" />
+	
+	<ImageView
+		android:id="@+id/ivPlayState"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:scaleType="centerInside"
+		android:src="@drawable/ic_player_center_start" />
+	
+	<ProgressBar
+		android:id="@+id/progressBar"
+		android:layout_width="32dp"
+		android:layout_height="32dp"
+		android:layout_centerInParent="true"
+		android:visibility="gone"
+		tools:visibility="visible" />
+	
+	<LinearLayout
+		android:id="@+id/llController"
+		android:layout_width="match_parent"
+		android:layout_height="44dp"
+		android:layout_alignParentBottom="true"
+		android:background="@drawable/player_mask_bottom"
+		android:gravity="center_vertical"
+		android:paddingLeft="8dp"
+		android:paddingRight="8dp">
+		
+		<ImageView
+			android:id="@+id/ivStartOrPause"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_player_start" />
+		
+		<SeekBar
+			android:id="@+id/seekBar"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:background="@null"
+			android:maxHeight="1.5dp"
+			android:minHeight="1.5dp"
+			android:progressDrawable="@drawable/seek_progress"
+			android:thumb="@drawable/seek_thumb" />
+		
+		<TextView
+			android:id="@+id/tvTime"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="00:00 / 00:00"
+			android:textColor="@color/colorWhite"
+			android:textSize="9sp" />
+		
+		<ImageView
+			android:id="@+id/ivChangeType"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:src="@drawable/ic_player_enlarge"/>
+	</LinearLayout>
+</RelativeLayout>
