@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Message
+import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -50,9 +51,14 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         tvTime = findViewById(R.id.tvTime)
         ivChangeType = findViewById(R.id.ivChangeType)
 
+        llController.visibility = View.GONE
         ivPlayState.setOnClickListener { startPlay() }
         ivStartOrPause.setOnClickListener {
-            if (mVideoPlayer.isPlaying()) {
+            if (mVideoView.getVideoState() == SimpleVideoView.STATE_IDLE) {
+                startPlay()
+                return@setOnClickListener
+            }
+            if (mVideoPlayer.isPlaying) {
                 pausePlay()
             } else {
                 startPlay()
@@ -132,6 +138,9 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 ivThumb.visibility = View.VISIBLE
                 ivStartOrPause.setImageResource(R.drawable.ic_player_start)
                 mHandler.removeMessages(MSG_UPDATE_TIME)
+                if (mVideoView.isTinyModel()) {
+                    enterNormalScreen()
+                }
             }
             SimpleVideoView.STATE_ERROR -> {
                 ivThumb.visibility = View.VISIBLE
@@ -181,13 +190,19 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
     }
 
     private fun showController() {
+//        Log.d("-----", "showController")
+        if (mVideoView.isTinyModel()) {
+            return
+        }
         if (mHandler.hasMessages(MSG_UPDATE_CONTROLLER)) {
             mHandler.removeMessages(MSG_UPDATE_CONTROLLER)
         }
         llController.visibility = View.VISIBLE
+        mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CONTROLLER, 4000)
     }
 
     private fun hideController() {
+//        Log.d("-----", "hideController")
         if (mHandler.hasMessages(MSG_UPDATE_CONTROLLER)) {
             mHandler.removeMessages(MSG_UPDATE_CONTROLLER)
         }
@@ -196,6 +211,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
 
     fun startPlay() {
         mVideoView.startPlay()
+        showController()
     }
 
     fun pausePlay() {
@@ -220,6 +236,12 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
 
     fun seekTo(progress: Int) {
         mVideoView.seekTo(progress)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+//        Log.d("-----", "dispatchTouchEvent--ev.action: " + ev.action)
+        showController()
+        return super.dispatchTouchEvent(ev)
     }
 
     private val mHandler = @SuppressLint("HandlerLeak")

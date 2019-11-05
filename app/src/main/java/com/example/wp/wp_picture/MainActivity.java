@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
                 boolean videoVisible = CommUtil.isVisibleLocal(simpleVideo);
-                Log.d("-----", "videoVisible : " + videoVisible);
-                Log.d("-----", "simpleVideo.isPlaying() : " + simpleVideo.isPlaying());
+                // Log.d("-----", "videoVisible : " + videoVisible);
+                // Log.d("-----", "simpleVideo.isPlaying() : " + simpleVideo.isPlaying());
                 if (simpleVideo.isPlaying()) {
                     if (videoVisible) {
                         if (simpleVideo.isTinyModel()) {
