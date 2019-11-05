@@ -8,12 +8,12 @@ import android.graphics.SurfaceTexture
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
+import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import java.io.IOException
-import kotlin.math.log
 
 /**
  * Created by wp on 2019/11/4.
@@ -23,9 +23,10 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     private final val TAG = "SimpleVideoView"
     private val printLog = true
 
-    private lateinit var mVideoUrl: String
+    private lateinit var mVideoInfo: VideoInfo
+    private var mImageLoader: ImageLoader? = null
 
-    private var mController: VideoController? = null
+    private lateinit var mController: VideoController
     private lateinit var mContainer: FrameLayout
 
     private lateinit var mTextureView: TextureView;
@@ -64,24 +65,27 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         mActivity = getActivity(context)
     }
 
-    fun setup(videoUrl: String) {
-        setup(videoUrl, null)
+    fun setImageLoader(loader: ImageLoader): SimpleVideoView {
+        this.mImageLoader = loader
+        return this
     }
 
-    fun setup(videoUrl: String, controller: VideoController?) {
-        mVideoUrl = videoUrl
+    fun setup(videoInfo: VideoInfo) {
+        setup(videoInfo, SimpleVideoController(context))
+    }
+
+    fun setup(videoInfo: VideoInfo, controller: VideoController) {
+        mVideoInfo = videoInfo
         mController = controller
-        if (mController == null) {
-            mController = SimpleVideoController(context)
-        }
-        mController?.setVideoView(this)
+        mController.setVideoView(this)
+        mController.setVideoInfo(mVideoInfo)
 
         mTextureView = TextureView(context).apply {
             surfaceTextureListener = this@SimpleVideoView
         }
         mContainer.addView(mTextureView, 0,
                 LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-        mContainer.addView(mController?.getControllerView(),
+        mContainer.addView(mController.getControllerView(),
                 LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
     }
 
@@ -104,7 +108,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         //切换到全屏后重新调用onSurfaceTextureAvailable
         if (mSurfaceTexture == null) {
             mSurfaceTexture = surfaceTexture
-            start(Surface(mSurfaceTexture))
+            initMediaPlayer(Surface(mSurfaceTexture))
         } else {
             mTextureView.surfaceTexture = mSurfaceTexture
         }
@@ -125,11 +129,11 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     }
 
-    private fun start(surface: Surface) {
+    private fun initMediaPlayer(surface: Surface) {
         try {
             mMediaPlayer = MediaPlayer().apply {
                 setAudioStreamType(AudioManager.STREAM_MUSIC)
-                setDataSource(context, Uri.parse(mVideoUrl))
+                setDataSource(context, Uri.parse(mVideoInfo.videoUrl))
                 setOnPreparedListener { setState(STATE_PREPARED) }
                 setOnCompletionListener { setState(STATE_COMPLETED) }
                 setOnBufferingUpdateListener { mp, percent ->
@@ -171,12 +175,32 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun setState(state: Int) {
         mCurrentState = state
-        mController?.onStateChanged(mCurrentState)
+        mController.onStateChanged(mCurrentState)
     }
 
     private fun setScreenType(type: Int) {
         mScreenType = type
-        mController?.onScreenTypeChanged(mScreenType)
+        mController.onScreenTypeChanged(mScreenType)
+    }
+
+    fun getImageLoader(): ImageLoader? {
+        return mImageLoader
+    }
+
+    fun isPlaying(): Boolean {
+        return mMediaPlayer.isPlaying
+    }
+
+    fun isFullscreenModel(): Boolean {
+        return mScreenType == TYPE_SCREEN_FULL
+    }
+
+    fun isTinyModel(): Boolean {
+        return mScreenType == TYPE_SCREEN_TINY
+    }
+
+    fun isNormalModel(): Boolean {
+        return mScreenType == TYPE_SCREEN_NORMAL
     }
 
     fun startPlay() {
@@ -195,8 +219,18 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun enterFullScreen() {
+        if (mScreenType == TYPE_SCREEN_FULL) {
+            return
+        }
         var contentRoot: ViewGroup? = null
         mActivity?.apply {
+            if (mActivity is AppCompatActivity) {
+                val ab = (mActivity as AppCompatActivity).supportActionBar
+                if (ab != null) {
+                    ab.setShowHideAnimationEnabled(false)
+                    ab.hide()
+                }
+            }
             window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN)
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -212,6 +246,9 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun enterTinyScreen() {
+        if (mScreenType == TYPE_SCREEN_TINY) {
+            return
+        }
         var contentRoot: ViewGroup? = null
         mActivity?.apply {
             contentRoot = mActivity?.findViewById(android.R.id.content)
@@ -225,6 +262,9 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun enterNormalScreen() {
+        if (mScreenType == TYPE_SCREEN_NORMAL) {
+            return
+        }
         var contentRoot: ViewGroup? = null
         mActivity?.apply {
             window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -238,6 +278,12 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         this.addView(mContainer, layoutParams)
 
         setScreenType(TYPE_SCREEN_NORMAL)
+    }
+
+    fun seekTo(progress: Int) {
+        if (mCurrentState != STATE_IDLE && mCurrentState != STATE_ERROR) {
+            mMediaPlayer.seekTo(progress)
+        }
     }
 
     fun releasePlayer() {
@@ -255,14 +301,18 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     fun onPaused() {
         if (mMediaPlayer.isPlaying) {
             mMediaPlayer.pause()
-            mController?.onPaused()
+            mController.onPaused()
         }
     }
 
     fun onDestroyed() {
         mMediaPlayer.stop()
         mMediaPlayer.release()
-        mController?.onDestroyed()
+        mController.onDestroyed()
+    }
+
+    fun getVideoController(): VideoController {
+        return this.mController
     }
 
     fun printLog(msg: String) {
@@ -278,4 +328,10 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
         return null
     }
+
+    data class VideoInfo(
+            var videoUrl: String,
+            var videoThumb: String,
+            var title: String
+    )
 }

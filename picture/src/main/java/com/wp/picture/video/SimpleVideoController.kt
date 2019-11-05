@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import com.wp.picture.R
 import java.util.*
@@ -57,15 +58,37 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 startPlay()
             }
         }
+        ivChangeType.setOnClickListener {
+            if (mVideoView.isNormalModel()) {
+                enterFullScreen()
+            } else {
+                enterNormalScreen()
+            }
+        }
+        seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                seekTo(seekBar.progress)
+            }
+        })
     }
 
     override fun setVideoView(view: SimpleVideoView) {
         mVideoView = view;
-        mVideoPlayer = view.getMediaPlayer()
     }
 
     override fun getControllerView(): View? {
         return mViewRoot
+    }
+
+    override fun setVideoInfo(videoInfo: SimpleVideoView.VideoInfo) {
+        if (videoInfo.videoThumb.isNotEmpty()) {
+            mVideoView.getImageLoader()?.displayThumb(ivThumb, videoInfo.videoThumb)
+        }
     }
 
     override fun onStateChanged(state: Int) {
@@ -75,6 +98,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 progressBar.visibility = View.VISIBLE
             }
             SimpleVideoView.STATE_PREPARED -> {
+                mVideoPlayer = mVideoView.getMediaPlayer()
                 progressBar.visibility = View.GONE
                 ivThumb.visibility = View.GONE
                 seekBar.apply {
@@ -106,6 +130,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
             SimpleVideoView.STATE_COMPLETED -> {
                 ivPlayState.visibility = View.GONE
                 ivThumb.visibility = View.VISIBLE
+                ivStartOrPause.setImageResource(R.drawable.ic_player_start)
                 mHandler.removeMessages(MSG_UPDATE_TIME)
             }
             SimpleVideoView.STATE_ERROR -> {
@@ -191,6 +216,10 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
 
     fun enterNormalScreen() {
         mVideoView.enterNormalScreen()
+    }
+
+    fun seekTo(progress: Int) {
+        mVideoView.seekTo(progress)
     }
 
     private val mHandler = @SuppressLint("HandlerLeak")

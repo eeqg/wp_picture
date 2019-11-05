@@ -2,8 +2,10 @@ package com.example.wp.wp_picture;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import com.example.wp.wp_picture.picker.BoxingUcrop;
 import com.example.wp.wp_picture.picker.PicturePicker;
 import com.wp.picture.picker.PictureLayout;
 import com.wp.picture.preview.PPView;
+import com.wp.picture.utils.CommUtil;
 import com.wp.picture.video.SimpleVideoView;
 
 import java.util.ArrayList;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView ivSample;
     private PictureLayout pictureLayout;
+    private SimpleVideoView simpleVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         observePictureLayout();
         observeNineGridView();
 
+        observeScrollView();
         observeBanner();
         observeSimpleVideo();
     }
@@ -93,6 +98,29 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // PPView.build().url(picUrl3).with(MainActivity.this);
                 PPView.build().url(picUrl4).show(MainActivity.this);
+            }
+        });
+    }
+
+    private void observeScrollView() {
+        NestedScrollView scrollView = findViewById(R.id.scrollView);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
+                boolean videoVisible = CommUtil.isVisibleLocal(simpleVideo);
+                Log.d("-----", "videoVisible : " + videoVisible);
+                Log.d("-----", "simpleVideo.isPlaying() : " + simpleVideo.isPlaying());
+                if (simpleVideo.isPlaying()) {
+                    if (videoVisible) {
+                        if (simpleVideo.isTinyModel()) {
+                            simpleVideo.enterNormalScreen();
+                        }
+                    } else {
+                        if (simpleVideo.isNormalModel()) {
+                            simpleVideo.enterTinyScreen();
+                        }
+                    }
+                }
             }
         });
     }
@@ -175,8 +203,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void observeSimpleVideo() {
-        SimpleVideoView simpleVideo = findViewById(R.id.simpleVideo);
-        simpleVideo.setup("https://flv2.bn.netease.com/videolib1/1811/26/OqJAZ893T/HD/OqJAZ893T-mobile.mp4");
+        simpleVideo = findViewById(R.id.simpleVideo);
+        SimpleVideoView.VideoInfo videoInfo = new SimpleVideoView.VideoInfo(
+                "https://flv2.bn.netease.com/videolib1/1811/26/OqJAZ893T/HD/OqJAZ893T-mobile.mp4"
+                , "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
+                "title");
+        simpleVideo.setImageLoader(new GlideImageLoader()).setup(videoInfo);
     }
 
     @Override
@@ -208,5 +240,14 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (simpleVideo != null && simpleVideo.isFullscreenModel()) {
+            simpleVideo.enterNormalScreen();
+            return;
+        }
+        super.onBackPressed();
     }
 }

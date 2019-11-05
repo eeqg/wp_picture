@@ -11,6 +11,8 @@ interface VideoController {
 
     fun setVideoView(view: SimpleVideoView)
 
+    fun setVideoInfo(videoInfo: SimpleVideoView.VideoInfo)
+
     fun onStateChanged(state: Int)
 
     fun onScreenTypeChanged(type: Int)

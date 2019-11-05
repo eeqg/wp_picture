@@ -2,7 +2,6 @@ package com.wp.picture.ninegrid;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +29,7 @@ public abstract class NineGridViewAdapter<T> implements Serializable {
 	
 	protected abstract View onCreateView(Context context);
 	
-	protected abstract void onBindView(NineGridView parent, ViewGroup itemView, int position);
+	protected abstract void onBindView(NineGridView parent, View itemView, int position);
 	
 	public List<T> getImageInfo() {
 		return imageInfo;

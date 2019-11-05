@@ -25,53 +25,54 @@ import java.util.List;
  * Created by wp on 2019/8/3.
  */
 public class NineGridImageAdapter extends NineGridViewAdapter<ImageInfoBean> {
-	private AppCompatActivity activity;
-	private ArrayList<String> imgList;
-	
-	public NineGridImageAdapter(Context context, List<ImageInfoBean> imageInfo) {
-		super(context, imageInfo);
-		activity = (AppCompatActivity) context;
-		imgList = new ArrayList<>();
-		for (ImageInfoBean infoBean : imageInfo) {
-			imgList.add(infoBean.imgUrl);
-		}
-	}
-	
-	@Override
-	protected View onCreateView(Context context) {
-		return View.inflate(context, R.layout.item_nine_grid, null);
-	}
-	
-	@SuppressLint("DefaultLocale")
-	@Override
-	protected void onBindView(NineGridView parent, ViewGroup itemView, int position) {
-		Log.d("picture", "-----onBindView()--" + position);
-		ImageView ivPicture = itemView.findViewById(R.id.ivPicture);
-		ImageInfoBean imageInfoBean = getImageInfo().get(position);
-		Log.d("picture", "-----onBindView()--" + imageInfoBean.imgUrl);
-		GlideImageLoader.getInstance().load(ivPicture, imageInfoBean.imgUrl);
-		
-		boolean hasMore = position == 8 && getImageInfo().size() > 9;
-		View maskerView = itemView.findViewById(R.id.viewMask);
-		maskerView.setVisibility(hasMore || imageInfoBean.isVideo ? View.VISIBLE : View.GONE);
-		TextView tvMoreNum = itemView.findViewById(R.id.tvMoreNum);
-		tvMoreNum.setVisibility(hasMore ? View.VISIBLE : View.GONE);
-		tvMoreNum.setText(String.format("+ %d", getImageInfo().size() - parent.getMaxSize()));
-		View ivPlay = itemView.findViewById(R.id.ivPlay);
-		ivPlay.setVisibility(imageInfoBean.isVideo ? View.VISIBLE : View.GONE);
-	}
-	
-	@Override
-	protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List imageInfo) {
-		ImageInfoBean imageInfoBean = (ImageInfoBean) imageInfo.get(index);
-		if (imageInfoBean.isVideo) {
-			String extension = MimeTypeMap.getFileExtensionFromUrl(imageInfoBean.videoUrl);
-			String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-			Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
-			mediaIntent.setDataAndType(Uri.parse(imageInfoBean.videoUrl), mimeType);
-			context.startActivity(mediaIntent);
-		} else {
-			PPView.build().urlList(imgList).disableTransform(true).position(index).show(activity);
-		}
-	}
+    private AppCompatActivity activity;
+    private ArrayList<String> imgList;
+
+    public NineGridImageAdapter(Context context, List<ImageInfoBean> imageInfo) {
+        super(context, imageInfo);
+        activity = (AppCompatActivity) context;
+        imgList = new ArrayList<>();
+        for (ImageInfoBean infoBean : imageInfo) {
+            imgList.add(infoBean.imgUrl);
+        }
+    }
+
+    @Override
+    protected View onCreateView(Context context) {
+        return View.inflate(context, R.layout.item_nine_grid, null);
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    protected void onBindView(NineGridView parent, View itemView, int position) {
+        Log.d("picture", "-----onBindView()--" + position);
+        Log.d("picture", "-----getChildCount--" + parent.getChildCount());
+        ImageView ivPicture = itemView.findViewById(R.id.ivPicture);
+        ImageInfoBean imageInfoBean = getImageInfo().get(position);
+        // Log.d("picture", "-----onBindView()--" + imageInfoBean.imgUrl);
+        GlideImageLoader.getInstance().load(ivPicture, imageInfoBean.imgUrl);
+
+        boolean hasMore = position == 8 && getImageInfo().size() > 9;
+        View maskerView = itemView.findViewById(R.id.viewMask);
+        maskerView.setVisibility(hasMore || imageInfoBean.isVideo ? View.VISIBLE : View.GONE);
+        TextView tvMoreNum = itemView.findViewById(R.id.tvMoreNum);
+        tvMoreNum.setVisibility(hasMore ? View.VISIBLE : View.GONE);
+        tvMoreNum.setText(String.format("+ %d", getImageInfo().size() - parent.getMaxSize()));
+        View ivPlay = itemView.findViewById(R.id.ivPlay);
+        ivPlay.setVisibility(imageInfoBean.isVideo ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List imageInfo) {
+        ImageInfoBean imageInfoBean = (ImageInfoBean) imageInfo.get(index);
+        if (imageInfoBean.isVideo) {
+            String extension = MimeTypeMap.getFileExtensionFromUrl(imageInfoBean.videoUrl);
+            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+            Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+            mediaIntent.setDataAndType(Uri.parse(imageInfoBean.videoUrl), mimeType);
+            context.startActivity(mediaIntent);
+        } else {
+            PPView.build().urlList(imgList).disableTransform(true).position(index).show(activity);
+        }
+    }
 }
