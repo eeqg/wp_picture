@@ -34,7 +34,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
     private lateinit var ivChangeType: ImageView
 
     private lateinit var mVideoView: SimpleVideoView
-    private lateinit var mVideoPlayer: MediaPlayer
+    private var mMediaPlayer: MediaPlayer? = null
 
     init {
         onInit()
@@ -58,7 +58,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 startPlay()
                 return@setOnClickListener
             }
-            if (mVideoPlayer.isPlaying) {
+            if (mVideoView.isPlaying()) {
                 pausePlay()
             } else {
                 startPlay()
@@ -104,14 +104,14 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 progressBar.visibility = View.VISIBLE
             }
             SimpleVideoView.STATE_PREPARED -> {
-                mVideoPlayer = mVideoView.getMediaPlayer()
+                mMediaPlayer = mVideoView.getMediaPlayer()
                 progressBar.visibility = View.GONE
                 ivThumb.visibility = View.GONE
                 seekBar.apply {
                     isClickable = true
                     isEnabled = true
                     isFocusable = true
-                    max = mVideoView.getMediaPlayer().duration
+                    max = mMediaPlayer?.duration ?: 0
                     progress = 0
                 }
                 showController()
@@ -126,7 +126,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 mHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, 200)
             }
             SimpleVideoView.STATE_PAUSED -> {
-                ivPlayState.setVisibility(View.VISIBLE)
+                ivPlayState.visibility = View.VISIBLE
                 ivPlayState.visibility = View.VISIBLE
                 ivStartOrPause.setImageResource(R.drawable.ic_player_start)
                 mHandler.removeMessages(MSG_UPDATE_TIME)
@@ -134,7 +134,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
             SimpleVideoView.STATE_BUFFERING_PAUSED -> {
             }
             SimpleVideoView.STATE_COMPLETED -> {
-                ivPlayState.visibility = View.GONE
+                ivPlayState.visibility = View.VISIBLE
                 ivThumb.visibility = View.VISIBLE
                 ivStartOrPause.setImageResource(R.drawable.ic_player_start)
                 mHandler.removeMessages(MSG_UPDATE_TIME)
@@ -148,6 +148,10 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 seekBar.progress = 0
             }
         }
+    }
+
+    override fun onBufferingChanged(percent: Double) {
+        seekBar.secondaryProgress = (percent * seekBar.max).toInt()
     }
 
     override fun onScreenTypeChanged(type: Int) {
@@ -175,9 +179,11 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
     }
 
     private fun updateTime() {
-        seekBar.progress = mVideoView.getMediaPlayer().currentPosition
-        tvTime.text = String.format("%s/%s",
-                formatTime(mVideoView.getMediaPlayer().currentPosition), formatTime(mVideoView.getMediaPlayer().duration))
+        if (mMediaPlayer != null) {
+            seekBar.progress = mMediaPlayer!!.currentPosition
+            tvTime.text = String.format("%s/%s",
+                    formatTime(mMediaPlayer!!.currentPosition), formatTime(mMediaPlayer!!.duration))
+        }
     }
 
     private fun formatTime(ms: Int): String {

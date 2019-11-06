@@ -15,6 +15,8 @@ interface VideoController {
 
     fun onStateChanged(state: Int)
 
+    fun onBufferingChanged(percent: Double)
+
     fun onScreenTypeChanged(type: Int)
 
     fun onPaused()
