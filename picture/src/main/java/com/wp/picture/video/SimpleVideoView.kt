@@ -48,9 +48,10 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         val STATE_PREPARED = 2        // 播放准备就绪
         val STATE_PLAYING = 3         // 正在播放
         val STATE_PAUSED = 4          // 暂停播放
-        val STATE_BUFFERING_PLAYING = 5 // 正在缓冲(播放器正在播放时，缓冲区数据不足，进行缓冲，缓冲区数据足够后恢复播放)
-        val STATE_BUFFERING_PAUSED = 6 // 正在缓冲(播放器正在播放时，缓冲区数据不足，进行缓冲，此时暂停播放器，继续缓冲，缓冲区数据足够后恢复暂停)
-        val STATE_COMPLETED = 7       // 播放完成
+        val STATE_STOPPED = 5          // 暂停停止
+        val STATE_BUFFERING_PLAYING = 6 // 正在缓冲(播放器正在播放时，缓冲区数据不足，进行缓冲，缓冲区数据足够后恢复播放)
+        val STATE_BUFFERING_PAUSED = 7 // 正在缓冲(播放器正在播放时，缓冲区数据不足，进行缓冲，此时暂停播放器，继续缓冲，缓冲区数据足够后恢复暂停)
+        val STATE_COMPLETED = 8       // 播放完成
 
         val TYPE_SCREEN_NORMAL = 0
         val TYPE_SCREEN_FULL = 1
@@ -166,6 +167,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     private fun initMediaPlayer(surface: Surface) {
         try {
             mMediaPlayer = MediaPlayer().apply {
+                mCurrentState = STATE_IDLE
                 setAudioStreamType(AudioManager.STREAM_MUSIC)
                 setDataSource(context, Uri.parse(mVideoInfo.videoUrl))
                 setOnPreparedListener {
@@ -178,7 +180,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                     mController.onBufferingChanged(percent / 100.0)
                 }
                 setOnErrorListener { mp, what, extra ->
-                    printLog("-----onError()--what: $what")
+                    printLog("-----onError()--what: $what/n--extra: $extra")
                     setState(STATE_ERROR)
                     false
                 }
@@ -249,18 +251,39 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun startPlay() {
-        if (mCurrentState == STATE_IDLE) {
-            mMediaPlayer?.prepareAsync()
-            setState(STATE_PREPARING)
-        } else {
-            mMediaPlayer?.start()
-            setState(STATE_PLAYING)
+        if (mMediaPlayer != null) {
+            when (mCurrentState) {
+                STATE_IDLE -> {
+                    mMediaPlayer!!.prepareAsync()
+                    setState(STATE_PREPARING)
+                }
+                STATE_PREPARED, STATE_PAUSED -> {
+                    mMediaPlayer!!.start()
+                    setState(STATE_PLAYING)
+                }
+                STATE_STOPPED -> {
+                    mMediaPlayer!!.prepareAsync()
+                }
+                else -> {
+                    printLog("error")
+                    initMediaPlayer(Surface(mSurfaceTexture))
+                }
+            }
         }
     }
 
     fun pausePlay() {
-        mMediaPlayer?.pause()
-        setState(STATE_PAUSED)
+        if (mMediaPlayer != null) {
+            mMediaPlayer!!.pause()
+            setState(STATE_PAUSED)
+        }
+    }
+
+    fun stopPlay() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer?.stop()
+            setState(STATE_STOPPED)
+        }
     }
 
     fun enterFullScreen() {
@@ -331,6 +354,13 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
+    fun resetPlayer() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer!!.reset()
+            setState(STATE_IDLE)
+        }
+    }
+
     fun releasePlayer() {
 //        if (mAudioManager != null) {
 //            mAudioManager.abandonAudioFocus(null)
@@ -346,6 +376,13 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     fun onPaused() {
         if (isPlaying()) {
             mMediaPlayer?.pause()
+            mController.onPaused()
+        }
+    }
+
+    fun onStop() {
+        if (isPlaying()) {
+            mMediaPlayer?.stop()
             mController.onPaused()
         }
     }

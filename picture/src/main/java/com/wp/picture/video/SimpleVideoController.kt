@@ -133,6 +133,16 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
             }
             SimpleVideoView.STATE_BUFFERING_PAUSED -> {
             }
+            SimpleVideoView.STATE_STOPPED -> {
+                ivPlayState.visibility = View.VISIBLE
+                ivThumb.visibility = View.VISIBLE
+                ivStartOrPause.setImageResource(R.drawable.ic_player_start)
+                mHandler.removeMessages(MSG_UPDATE_TIME)
+                if (mVideoView.isTinyModel()) {
+                    enterNormalScreen()
+                }
+                seekBar.progress = 0
+            }
             SimpleVideoView.STATE_COMPLETED -> {
                 ivPlayState.visibility = View.VISIBLE
                 ivThumb.visibility = View.VISIBLE

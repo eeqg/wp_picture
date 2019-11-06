@@ -212,6 +212,13 @@ public class MainActivity extends AppCompatActivity {
                 , "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
                 "title");
         simpleVideo.setImageLoader(new GlideImageLoader()).setup(videoInfo);
+
+        findViewById(R.id.btnStopPlay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simpleVideo.stopPlay();
+            }
+        });
     }
 
     @Override
