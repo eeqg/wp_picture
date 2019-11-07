@@ -139,6 +139,9 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun fixVideoViewAspect(parentWidth: Int, parentHeight: Int) {
+        if (mMediaPlayer == null) {
+            return
+        }
         val textureViewWidth: Int
         val textureViewHeight: Int
 //        printLog("-----parentWidth = $parentWidth")
@@ -251,6 +254,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun startPlay() {
+        printLog("------>>>startPlay--$mMediaPlayer ---mCurrentState : $mCurrentState")
         if (mMediaPlayer != null) {
             when (mCurrentState) {
                 STATE_IDLE -> {
@@ -269,6 +273,8 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                     initMediaPlayer(Surface(mSurfaceTexture))
                 }
             }
+        } else {
+            printLog("error: MediaPlayer not init.")
         }
     }
 

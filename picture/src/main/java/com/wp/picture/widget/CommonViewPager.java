@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-
 import com.wp.picture.R;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class CommonViewPager extends FrameLayout {
     private OnSlideListener slideListener;
     private float mLastX, mLastY;
     private float widthOffset = 1f;
-    private View rootView;
+    private LinearLayout llRoot;
     protected boolean multiPage = false;
     protected int itemPagerWidth;
 
@@ -61,8 +60,9 @@ public class CommonViewPager extends FrameLayout {
         // addView(viewPager, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         //         ViewGroup.LayoutParams.MATCH_PARENT));
 
-        rootView = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_viewpager, this);
-        viewPager = rootView.findViewById(R.id.noScrollViewPager);
+        LayoutInflater.from(getContext()).inflate(R.layout.layout_common_viewpager, this);
+        llRoot = findViewById(R.id.llRoot);
+        viewPager = llRoot.findViewById(R.id.noScrollViewPager);
         viewPager.setOffscreenPageLimit(5);
     }
 
@@ -110,6 +110,8 @@ public class CommonViewPager extends FrameLayout {
 
     public CommonViewPager setMultiPage(boolean multiPage) {
         this.multiPage = multiPage;
+        llRoot.setClipChildren(false);
+        llRoot.setLayerType(LAYER_TYPE_SOFTWARE, null);//关闭硬件加速
         return this;
     }
 
@@ -205,7 +207,7 @@ public class CommonViewPager extends FrameLayout {
         layoutParams2.width = itemPagerWidth;
         viewPager.setLayoutParams(layoutParams2);
 
-        rootView.setOnTouchListener(new OnTouchListener() {
+        setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return viewPager.dispatchTouchEvent(event);

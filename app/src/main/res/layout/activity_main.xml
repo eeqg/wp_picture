@@ -122,6 +122,12 @@
 			android:layout_gravity="end"
 			android:text="stop_play" />
 		
+		<com.wp.picture.widget.CommonViewPager
+			android:id="@+id/viewPager"
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:layout_marginTop="10dp" />
+		
 		<View
 			android:layout_width="match_parent"
 			android:layout_height="38dp" />

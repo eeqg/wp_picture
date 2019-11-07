@@ -15,6 +15,9 @@ public class CommUtil {
      * 判断View是否可见
      */
     public static boolean isVisibleLocal(View target) {
+        if (target == null) {
+            return false;
+        }
         Rect rect = new Rect();
         target.getLocalVisibleRect(rect);
         // Log.d("-----", "rect.top : " + rect.top);

@@ -1,6 +1,7 @@
 package com.example.wp.wp_picture;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import com.example.wp.wp_picture.ninegrid.ImageInfoBean;
 import com.example.wp.wp_picture.ninegrid.NineGridImageAdapter;
 import com.wp.picture.banner.Banner;
 import com.wp.picture.banner.callback.BindViewCallBack;
+import com.wp.picture.banner.callback.CreateViewCallBack;
 import com.wp.picture.banner.callback.CreateViewCaller;
 import com.wp.picture.banner.callback.OnClickBannerListener;
 import com.wp.picture.banner.core.BaseBanner;
@@ -37,6 +40,7 @@ import com.wp.picture.picker.PictureLayout;
 import com.wp.picture.preview.PPView;
 import com.wp.picture.utils.CommUtil;
 import com.wp.picture.video.SimpleVideoView;
+import com.wp.picture.widget.CommonViewPager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivSample;
     private PictureLayout pictureLayout;
     private SimpleVideoView simpleVideo;
+    private SimpleVideoView simpleVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
         observePictureLayout();
         observeNineGridView();
 
-        observeScrollView();
         observeBanner();
+        observeScrollView();
         observeSimpleVideo();
+        observeWithVideo();
     }
 
     private void initPictureLayout() {
@@ -183,15 +189,16 @@ public class MainActivity extends AppCompatActivity {
         String[] stringArray = getResources().getStringArray(R.array.url4);
         List<String> images = Arrays.asList(stringArray);
         banner.setViewIndex(BaseBanner.VERTICAL)
-                .createView(CreateViewCaller.build())
+                .createView(new CreateViewCallBack() {
+                    @Override
+                    public View createView(Context context, ViewGroup parent, int viewType, int viewIndex) {
+                        return LayoutInflater.from(MainActivity.this).inflate(R.layout.item_banner_index, null);
+                    }
+                })
                 .bindView(new BindViewCallBack<FrameLayout, String>() {
                     @Override
                     public void bindView(FrameLayout imageRootView, String data, int position) {
-                        FrameLayout view = (FrameLayout) CreateViewCaller.findFrameLayout(imageRootView);
-                        view.removeAllViews();
-                        View bannerRooter = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_banner_index, null);
-                        view.addView(bannerRooter);
-                        ImageView ivBanner = bannerRooter.findViewById(R.id.ivBanner);
+                        ImageView ivBanner = imageRootView.findViewById(R.id.ivBanner);
                         GlideImageLoader.getInstance().load(ivBanner, data);
                     }
                 })
@@ -219,6 +226,48 @@ public class MainActivity extends AppCompatActivity {
                 simpleVideo.stopPlay();
             }
         });
+    }
+
+    private void observeWithVideo() {
+        String[] urls = getResources().getStringArray(R.array.url);
+        List<String> images = Arrays.asList(urls);
+
+        CommonViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager
+                .createItemView(new CommonViewPager.ViewCreator<FrameLayout, String>() {
+                    @Override
+                    public View onCreateView(int position) {
+                        // if (position == 0) {
+                        //     return LayoutInflater.from(mActivity).inflate(R.layout.item_video, null);
+                        // }
+                        return LayoutInflater.from(MainActivity.this).inflate(R.layout.item_banner_index, null);
+                    }
+
+                    @Override
+                    public void onBindView(FrameLayout view, String data, int position) {
+                        if (position == 0) {
+                            simpleVideoView = new SimpleVideoView(MainActivity.this);
+                            view.addView(simpleVideoView);
+                            SimpleVideoView.VideoInfo videoInfo = new SimpleVideoView.VideoInfo(
+                                    videoUrl
+                                    , "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
+                                    "title");
+                            simpleVideoView.setImageLoader(GlideImageLoader.getInstance()).setup(videoInfo);
+                        } else {
+                            ImageView ivBanner = view.findViewById(R.id.ivBanner);
+                            GlideImageLoader.getInstance().load(ivBanner, data);
+                        }
+                    }
+                })
+                .setOnItemSelectedListener(new CommonViewPager.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object data, int position) {
+                        if (position != 0) {
+                            simpleVideoView.stopPlay();
+                        }
+                    }
+                })
+                .execute(images);
     }
 
     @Override
