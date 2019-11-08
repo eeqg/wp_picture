@@ -1,11 +1,10 @@
 package com.example.wp.wp_picture;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,15 +26,14 @@ import com.example.wp.wp_picture.loder.PPViewGlideLoader;
 import com.example.wp.wp_picture.loder.PictureLayoutImageLoader;
 import com.example.wp.wp_picture.ninegrid.ImageInfoBean;
 import com.example.wp.wp_picture.ninegrid.NineGridImageAdapter;
+import com.example.wp.wp_picture.picker.BoxingUcrop;
+import com.example.wp.wp_picture.picker.PicturePicker;
 import com.wp.picture.banner.Banner;
 import com.wp.picture.banner.callback.BindViewCallBack;
 import com.wp.picture.banner.callback.CreateViewCallBack;
-import com.wp.picture.banner.callback.CreateViewCaller;
 import com.wp.picture.banner.callback.OnClickBannerListener;
 import com.wp.picture.banner.core.BaseBanner;
 import com.wp.picture.ninegrid.NineGridView;
-import com.example.wp.wp_picture.picker.BoxingUcrop;
-import com.example.wp.wp_picture.picker.PicturePicker;
 import com.wp.picture.picker.PictureLayout;
 import com.wp.picture.preview.PPView;
 import com.wp.picture.utils.CommUtil;
@@ -44,7 +42,6 @@ import com.wp.picture.widget.CommonViewPager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
-                boolean videoVisible = CommUtil.isVisibleLocal(simpleVideo);
+                final boolean videoVisible = CommUtil.isVisibleLocal(simpleVideo);
                 // Log.d("-----", "videoVisible : " + videoVisible);
                 // Log.d("-----", "simpleVideo.isPlaying() : " + simpleVideo.isPlaying());
                 if (simpleVideo.isPlaying()) {
@@ -151,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSelect(int position, Uri pictureUri) {
-                Log.d("test", "-----position = " + position);
+                Log.d("test666", "-----position = " + position);
                 ArrayList<String> picList = new ArrayList<>();
                 for (Uri uri : pictureLayout.getPictureList()) {
                     picList.add(uri.toString());
@@ -272,11 +269,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        if (simpleVideo != null) {
+            simpleVideo.onPause();
+        }
+        if (simpleVideoView != null) {
+            simpleVideoView.onPause();
+        }
         super.onPause();
     }
 
     @Override
+    protected void onStop() {
+        if (simpleVideo != null) {
+            simpleVideo.onStop();
+        }
+        if (simpleVideoView != null) {
+            simpleVideoView.onStop();
+        }
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        if (simpleVideo != null) {
+            simpleVideo.onDestroy();
+        }
+        if (simpleVideoView != null) {
+            simpleVideoView.onDestroy();
+        }
         super.onDestroy();
     }
 

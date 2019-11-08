@@ -27,14 +27,21 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
     private lateinit var ivThumb: ImageView
     private lateinit var ivPlayState: ImageView
     private lateinit var progressBar: View
-    private lateinit var llController: View
     private lateinit var ivStartOrPause: ImageView
+    private lateinit var llTitleBar: View
+    private lateinit var ivBack: ImageView
+    private lateinit var tvTitle: TextView
+    private lateinit var ivClose: ImageView
+    private lateinit var llBottomBar: View
     private lateinit var seekBar: SeekBar
     private lateinit var tvTime: TextView
     private lateinit var ivChangeType: ImageView
+    private lateinit var ivVolumeOff: ImageView
 
     private lateinit var mVideoView: SimpleVideoView
     private var mMediaPlayer: MediaPlayer? = null
+
+    private var volumeOn = true
 
     init {
         onInit()
@@ -45,13 +52,25 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         ivThumb = findViewById(R.id.ivThumb)
         ivPlayState = findViewById(R.id.ivPlayState)
         progressBar = findViewById(R.id.progressBar)
-        llController = findViewById(R.id.llController)
         ivStartOrPause = findViewById(R.id.ivStartOrPause)
+        llTitleBar = findViewById(R.id.llTitleBar)
+        ivBack = findViewById(R.id.ivBack);
+        ivClose = findViewById(R.id.ivClose);
+        tvTitle = findViewById(R.id.tvTitle);
+        llBottomBar = findViewById(R.id.llBottomBar)
         seekBar = findViewById(R.id.seekBar)
         tvTime = findViewById(R.id.tvTime)
         ivChangeType = findViewById(R.id.ivChangeType)
+        ivVolumeOff = findViewById(R.id.ivVolumeOff)
 
-        llController.visibility = View.GONE
+        llTitleBar.visibility = View.GONE
+        llBottomBar.visibility = View.GONE
+        ivVolumeOff.visibility = View.GONE
+        ivBack.setOnClickListener { enterNormalScreen() }
+        ivClose.setOnClickListener {
+            enterNormalScreen()
+            pausePlay()
+        }
         ivPlayState.setOnClickListener { startPlay() }
         ivStartOrPause.setOnClickListener {
             if (mVideoView.getVideoState() == SimpleVideoView.STATE_IDLE) {
@@ -81,6 +100,16 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                 seekTo(seekBar.progress)
             }
         })
+        ivVolumeOff.setOnClickListener {
+            if (volumeOn) {
+                mVideoView.turnOffVolume()
+                ivVolumeOff.setImageResource(R.drawable.ic_volume_off_white_24dp)
+            } else {
+                mVideoView.turnOnVolume()
+                ivVolumeOff.setImageResource(R.drawable.ic_volume_up_white_24dp)
+            }
+            volumeOn = !volumeOn
+        }
     }
 
     override fun setVideoView(view: SimpleVideoView) {
@@ -95,6 +124,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         if (videoInfo.videoThumb.isNotEmpty()) {
             mVideoView.getImageLoader()?.displayThumb(ivThumb, videoInfo.videoThumb)
         }
+        tvTitle.text = videoInfo.title
     }
 
     override fun onStateChanged(state: Int) {
@@ -167,14 +197,29 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
     override fun onScreenTypeChanged(type: Int) {
         when (type) {
             SimpleVideoView.TYPE_SCREEN_FULL -> {
-                llController.visibility = View.VISIBLE
+                llTitleBar.visibility = View.VISIBLE
+                ivBack.visibility = View.VISIBLE
+                tvTitle.visibility = View.VISIBLE
+                ivClose.visibility = View.GONE
+                llBottomBar.visibility = View.VISIBLE
+                ivVolumeOff.visibility = View.VISIBLE
                 ivChangeType.setImageResource(R.drawable.ic_player_shrink)
             }
             SimpleVideoView.TYPE_SCREEN_TINY -> {
-                llController.visibility = View.GONE
+                llTitleBar.visibility = View.VISIBLE
+                ivBack.visibility = View.GONE
+                tvTitle.visibility = View.INVISIBLE
+                ivClose.visibility = View.VISIBLE
+                llBottomBar.visibility = View.GONE
+                ivVolumeOff.visibility = View.GONE
             }
             SimpleVideoView.TYPE_SCREEN_NORMAL -> {
-                llController.visibility = View.VISIBLE
+                llTitleBar.visibility = View.VISIBLE
+                ivBack.visibility = View.GONE
+                tvTitle.visibility = View.VISIBLE
+                ivClose.visibility = View.GONE
+                llBottomBar.visibility = View.VISIBLE
+                ivVolumeOff.visibility = View.VISIBLE
                 ivChangeType.setImageResource(R.drawable.ic_player_enlarge)
             }
         }
@@ -213,8 +258,10 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         if (mHandler.hasMessages(MSG_UPDATE_CONTROLLER)) {
             mHandler.removeMessages(MSG_UPDATE_CONTROLLER)
         }
-        llController.visibility = View.VISIBLE
-        mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CONTROLLER, 4000)
+        llTitleBar.visibility = View.VISIBLE
+        llBottomBar.visibility = View.VISIBLE
+        ivVolumeOff.visibility = View.VISIBLE
+        mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CONTROLLER, 5000)
     }
 
     private fun hideController() {
@@ -222,7 +269,11 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         if (mHandler.hasMessages(MSG_UPDATE_CONTROLLER)) {
             mHandler.removeMessages(MSG_UPDATE_CONTROLLER)
         }
-        mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CONTROLLER, 4000)
+        if (!mVideoView.isTinyModel()) {
+            llTitleBar.visibility = View.GONE
+        }
+        llBottomBar.visibility = View.GONE
+        ivVolumeOff.visibility = View.GONE
     }
 
     fun startPlay() {
@@ -269,8 +320,7 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
                     this.sendEmptyMessageDelayed(MSG_UPDATE_TIME, 200)
                 }
                 MSG_UPDATE_CONTROLLER -> {
-                    llController.visibility = View.GONE
-                    this.removeMessages(MSG_UPDATE_CONTROLLER)
+                    hideController()
                 }
             }
         }

@@ -66,6 +66,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         setBackgroundColor(Color.BLACK)
         mContainer = FrameLayout(context);
         mContainer.setBackgroundColor(Color.BLACK)
+        mContainer.isClickable = true
         addView(mContainer, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT))
         mActivity = getActivity(context)
@@ -296,62 +297,92 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         if (mScreenType == TYPE_SCREEN_FULL) {
             return
         }
-        var contentRoot: ViewGroup? = null
-        mActivity?.apply {
-            if (mActivity is AppCompatActivity) {
-                val ab = (mActivity as AppCompatActivity).supportActionBar
-                if (ab != null) {
-                    ab.setShowHideAnimationEnabled(false)
-                    ab.hide()
+        post {
+            var contentRoot: ViewGroup? = null
+            mActivity?.apply {
+                if (mActivity is AppCompatActivity) {
+                    val ab = (mActivity as AppCompatActivity).supportActionBar
+                    if (ab != null) {
+                        ab.setShowHideAnimationEnabled(false)
+                        ab.hide()
+                    }
                 }
+                window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                contentRoot = mActivity?.findViewById(android.R.id.content)
             }
-            window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            contentRoot = mActivity?.findViewById(android.R.id.content)
+
+            this.removeView(mContainer)
+            val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT)
+            contentRoot?.addView(mContainer, layoutParams)
+
+            setScreenType(TYPE_SCREEN_FULL)
         }
-
-        this.removeView(mContainer)
-        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT)
-        contentRoot?.addView(mContainer, layoutParams)
-
-        setScreenType(TYPE_SCREEN_FULL)
     }
 
     fun enterTinyScreen() {
         if (mScreenType == TYPE_SCREEN_TINY) {
             return
         }
-        var contentRoot: ViewGroup? = null
-        mActivity?.apply {
-            contentRoot = mActivity?.findViewById(android.R.id.content)
-        }
-        this.removeView(mContainer)
-        val layoutParams = LayoutParams(mTinyWidth, mTinyWidth)
-        layoutParams.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-        contentRoot?.addView(mContainer, layoutParams)
+        post {
+            var contentRoot: ViewGroup? = null
+            mActivity?.apply {
+                contentRoot = mActivity?.findViewById(android.R.id.content)
+            }
+            this.removeView(mContainer)
+            val width: Int
+            val height: Int
+            val videoAspectRatio = mMediaPlayer!!.videoWidth * 1.0 / mMediaPlayer!!.videoHeight
+            if (videoAspectRatio > 1) {
+                width = mTinyWidth
+                height = (mTinyWidth * (1.0 / videoAspectRatio)).toInt()
+            } else {
+                width = mTinyWidth
+                height = mTinyWidth
+            }
+            val layoutParams = LayoutParams(width, height)
+            layoutParams.gravity = Gravity.END or Gravity.TOP
+            layoutParams.rightMargin = 16
+            layoutParams.topMargin = 16
+            contentRoot?.addView(mContainer, layoutParams)
 
-        setScreenType(TYPE_SCREEN_TINY)
+            setScreenType(TYPE_SCREEN_TINY)
+        }
     }
 
     fun enterNormalScreen() {
         if (mScreenType == TYPE_SCREEN_NORMAL) {
             return
         }
-        var contentRoot: ViewGroup? = null
-        mActivity?.apply {
-            window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            contentRoot = mActivity?.findViewById(android.R.id.content)
+        post {
+            var contentRoot: ViewGroup? = null
+            mActivity?.apply {
+                window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                contentRoot = mActivity?.findViewById(android.R.id.content)
+            }
+
+            val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT)
+            contentRoot?.removeView(mContainer)
+            this.addView(mContainer, layoutParams)
+
+            setScreenType(TYPE_SCREEN_NORMAL)
         }
+    }
 
-        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT)
-        contentRoot?.removeView(mContainer)
-        this.addView(mContainer, layoutParams)
+    fun turnOffVolume() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer!!.setVolume(0f, 0f)
+        }
+    }
 
-        setScreenType(TYPE_SCREEN_NORMAL)
+    fun turnOnVolume() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer!!.setVolume(1f, 1f)
+        }
     }
 
     fun seekTo(progress: Int) {
@@ -379,7 +410,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun onPaused() {
+    fun onPause() {
         if (isPlaying()) {
             mMediaPlayer?.pause()
             mController.onPaused()
@@ -393,7 +424,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun onDestroyed() {
+    fun onDestroy() {
         mMediaPlayer?.stop()
         mMediaPlayer?.release()
         mController.onDestroyed()
@@ -401,6 +432,11 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun getVideoController(): VideoController {
         return this.mController
+    }
+
+    override fun onDetachedFromWindow() {
+        onDestroy()
+        super.onDetachedFromWindow()
     }
 
     fun printLog(msg: String) {
