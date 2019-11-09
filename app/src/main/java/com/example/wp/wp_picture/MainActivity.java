@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void observePictureLayout() {
         pictureLayout = findViewById(R.id.pictureLayout);
+        pictureLayout.addPictureUrl(picUrl3);
         pictureLayout.setOnPictureListener(new PictureLayout.OnPictureListener() {
             @Override
             public void onInsert() {
