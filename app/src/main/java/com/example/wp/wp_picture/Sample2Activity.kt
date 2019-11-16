@@ -39,7 +39,6 @@ class Sample2Activity : AppCompatActivity() {
             }
         })
 
-
         val layoutParams = FrameLayout.LayoutParams(120, 120)
                 .apply {
                     gravity = Gravity.BOTTOM or Gravity.END
@@ -48,6 +47,9 @@ class Sample2Activity : AppCompatActivity() {
                 }
         ImageView(this).apply {
             setImageDrawable(ColorDrawable(Color.parseColor("#90FF2323")))
+            setOnClickListener {
+                simpleFloating.hide()
+            }
 
             simpleFloating = SimpleFloating(context, this, layoutParams)
                     .setCollapseSite(SimpleFloating.Site.RIGHT)

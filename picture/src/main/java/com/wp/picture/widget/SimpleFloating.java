@@ -26,10 +26,11 @@ public class SimpleFloating {
     private FrameLayout.LayoutParams layoutParams;
     private Site mSite = Site.RIGHT;
     private int mWidth = -2, mHeight = -2;
+    private boolean showing = false;
 
     private ValueAnimator collapseAnimator;
     private ValueAnimator expandAnimator;
-    private int mDuration = 400;
+    private int mDuration = 200;
     private int mDelay = 500;
     float initValue, collapsedValue;
     private MyHandler myHandler;
@@ -72,6 +73,7 @@ public class SimpleFloating {
             layoutParams = new FrameLayout.LayoutParams(-2, -2);
         }
         rootContentView.addView(mFloatingView, layoutParams);
+        showing = true;
 
         mFloatingView.post(new Runnable() {
             @Override
@@ -103,6 +105,9 @@ public class SimpleFloating {
     }
 
     public void startCollapseAnimation() {
+        if (!isShowing()) {
+            return;
+        }
         if (myHandler != null && myHandler.hasMessages(MSG_EXPAND)) {
             myHandler.removeMessages(MSG_EXPAND);
         }
@@ -124,6 +129,9 @@ public class SimpleFloating {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                if (!isShowing()) {
+                    return;
+                }
                 float values = (float) animation.getAnimatedValue();
                 if (mSite == Site.LEFT || mSite == Site.RIGHT) {
                     mFloatingView.setX(values);
@@ -136,6 +144,9 @@ public class SimpleFloating {
     }
 
     public void startExpandAnimationDelay() {
+        if (!isShowing()) {
+            return;
+        }
         if (myHandler == null) {
             myHandler = new MyHandler(this);
         }
@@ -146,6 +157,9 @@ public class SimpleFloating {
     }
 
     public void startExpandAnimationRe() {
+        if (!isShowing()) {
+            return;
+        }
         if (collapseAnimator != null && collapseAnimator.isStarted()) {
             collapseAnimator.cancel();
         }
@@ -163,6 +177,9 @@ public class SimpleFloating {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                if (!isShowing()) {
+                    return;
+                }
                 float values = (float) animation.getAnimatedValue();
                 if (mSite == Site.LEFT || mSite == Site.RIGHT) {
                     mFloatingView.setX(values);
@@ -175,7 +192,7 @@ public class SimpleFloating {
     }
 
     public void hide() {
-        if (myHandler.hasMessages(MSG_EXPAND)) {
+        if (myHandler != null && myHandler.hasMessages(MSG_EXPAND)) {
             myHandler.removeMessages(MSG_EXPAND);
         }
         if (expandAnimator != null && expandAnimator.isStarted()) {
@@ -187,8 +204,11 @@ public class SimpleFloating {
             collapseAnimator = null;
         }
         rootContentView.removeView(mFloatingView);
-        myHandler = null;
-        mFloatingView = null;
+        showing = false;
+    }
+
+    public boolean isShowing() {
+        return showing;
     }
 
     public static class MyHandler extends Handler {
