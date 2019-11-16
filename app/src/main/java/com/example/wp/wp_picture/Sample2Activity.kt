@@ -52,6 +52,7 @@ class Sample2Activity : AppCompatActivity() {
             }
 
             simpleFloating = SimpleFloating(context, this, layoutParams)
+//            simpleFloating = SimpleFloating(flContent, this, layoutParams)
                     .setCollapseSite(SimpleFloating.Site.RIGHT)
             simpleFloating.show()
         }

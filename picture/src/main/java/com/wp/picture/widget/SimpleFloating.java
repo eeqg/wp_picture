@@ -20,7 +20,6 @@ public class SimpleFloating {
     private final String TAG = "SimpleFloating";
     private final static int MSG_EXPAND = 99;
 
-    private Activity mActivity;
     private View mFloatingView;
     private ViewGroup rootContentView;
     private FrameLayout.LayoutParams layoutParams;
@@ -40,7 +39,14 @@ public class SimpleFloating {
     }
 
     public SimpleFloating(Context context, View view, FrameLayout.LayoutParams layoutParams) {
-        mActivity = scanForActivity(context);
+        Activity activity = scanForActivity(context);
+        rootContentView = activity.findViewById(android.R.id.content);
+        mFloatingView = view;
+        this.layoutParams = layoutParams;
+    }
+
+    public SimpleFloating(FrameLayout contentView, View view, FrameLayout.LayoutParams layoutParams) {
+        rootContentView = contentView;
         mFloatingView = view;
         this.layoutParams = layoutParams;
     }
@@ -49,12 +55,6 @@ public class SimpleFloating {
         this.mSite = site;
         return this;
     }
-
-    // public SimpleFloating setViewParams(int width, int height) {
-    //     this.mWidth = width;
-    //     this.mHeight = height;
-    //     return this;
-    // }
 
     public SimpleFloating setDuration(int duration) {
         this.mDuration = duration;
@@ -68,7 +68,6 @@ public class SimpleFloating {
 
     public void show() {
         // Log.d(TAG, "-----show()--1");
-        rootContentView = mActivity.findViewById(android.R.id.content);
         if (layoutParams == null) {
             layoutParams = new FrameLayout.LayoutParams(-2, -2);
         }
