@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -85,19 +83,19 @@ public class SimpleFloating {
                 switch (mSite) {
                     case LEFT:
                         initValue = mFloatingView.getX();
-                        collapsedValue = initValue - mWidth * 0.8f;
+                        collapsedValue = initValue - layoutParams.leftMargin - mWidth * 0.8f;
                         break;
                     case TOP:
                         initValue = mFloatingView.getY();
-                        collapsedValue = initValue - mHeight * 0.8f;
+                        collapsedValue = initValue - layoutParams.topMargin - mHeight * 0.8f;
                         break;
                     case RIGHT:
                         initValue = mFloatingView.getX();
-                        collapsedValue = initValue + mWidth * 0.8f;
+                        collapsedValue = initValue + layoutParams.rightMargin + mWidth * 0.8f;
                         break;
                     case BOTTOM:
                         initValue = mFloatingView.getY();
-                        collapsedValue = initValue + mHeight * 0.8f;
+                        collapsedValue = initValue + layoutParams.bottomMargin + mHeight * 0.8f;
                         break;
                 }
             }
@@ -114,13 +112,24 @@ public class SimpleFloating {
         if (collapseAnimator != null && collapseAnimator.isStarted()) {
             collapseAnimator.cancel();
         }
-        collapseAnimator = ValueAnimator.ofFloat(mFloatingView.getX(), collapsedValue).setDuration(mDuration);
+
+        float startValue = 0;
+        if (mSite == Site.LEFT || mSite == Site.RIGHT) {
+            startValue = mFloatingView.getX();
+        } else if (mSite == Site.TOP || mSite == Site.BOTTOM) {
+            startValue = mFloatingView.getY();
+        }
+        collapseAnimator = ValueAnimator.ofFloat(startValue, collapsedValue).setDuration(mDuration);
         collapseAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float values = (float) animation.getAnimatedValue();
-                mFloatingView.setX(values);
+                if (mSite == Site.LEFT || mSite == Site.RIGHT) {
+                    mFloatingView.setX(values);
+                } else if (mSite == Site.TOP || mSite == Site.BOTTOM) {
+                    mFloatingView.setY(values);
+                }
             }
         });
         collapseAnimator.start();
@@ -143,13 +152,23 @@ public class SimpleFloating {
         if (expandAnimator != null && expandAnimator.isStarted()) {
             expandAnimator.cancel();
         }
-        expandAnimator = ValueAnimator.ofFloat(mFloatingView.getX(), initValue).setDuration(mDuration);
+        float startValue = 0;
+        if (mSite == Site.LEFT || mSite == Site.RIGHT) {
+            startValue = mFloatingView.getX();
+        } else if (mSite == Site.TOP || mSite == Site.BOTTOM) {
+            startValue = mFloatingView.getY();
+        }
+        expandAnimator = ValueAnimator.ofFloat(startValue, initValue).setDuration(mDuration);
         expandAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float values = (float) animation.getAnimatedValue();
-                mFloatingView.setX(values);
+                if (mSite == Site.LEFT || mSite == Site.RIGHT) {
+                    mFloatingView.setX(values);
+                } else if (mSite == Site.TOP || mSite == Site.BOTTOM) {
+                    mFloatingView.setY(values);
+                }
             }
         });
         expandAnimator.start();

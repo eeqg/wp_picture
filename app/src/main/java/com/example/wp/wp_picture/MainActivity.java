@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "-----", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, Sample2Activity.class));
             }
         });
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-2, -2);
