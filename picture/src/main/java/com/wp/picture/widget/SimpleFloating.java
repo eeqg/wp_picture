@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import java.lang.ref.WeakReference;
@@ -123,7 +126,10 @@ public class SimpleFloating {
         } else if (mSite == Site.TOP || mSite == Site.BOTTOM) {
             startValue = mFloatingView.getY();
         }
-        collapseAnimator = ValueAnimator.ofFloat(startValue, collapsedValue).setDuration(mDuration);
+        collapseAnimator = ValueAnimator
+                .ofFloat(startValue, collapsedValue)
+                .setDuration(mDuration);
+        collapseAnimator.setInterpolator(new AccelerateInterpolator());
         collapseAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
@@ -171,7 +177,10 @@ public class SimpleFloating {
         } else if (mSite == Site.TOP || mSite == Site.BOTTOM) {
             startValue = mFloatingView.getY();
         }
-        expandAnimator = ValueAnimator.ofFloat(startValue, initValue).setDuration(mDuration);
+        expandAnimator = ValueAnimator
+                .ofFloat(startValue, initValue)
+                .setDuration(mDuration);
+        expandAnimator.setInterpolator(new AccelerateInterpolator());
         expandAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
