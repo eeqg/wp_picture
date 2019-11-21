@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 public class NoScrollViewPager extends ViewPager {
-	private boolean canScroll = true;
+	private boolean canScroll = false;
 	
 	public NoScrollViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);

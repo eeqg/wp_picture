@@ -86,6 +86,10 @@ class VerificationCodeView @JvmOverloads constructor(context: Context, attrs: At
         }
     }
 
+    override fun dispatchDraw(canvas: Canvas) {
+        super.dispatchDraw(canvas)
+    }
+
     private fun createCode() {
         val stringBuilder = StringBuilder()
         for (i in 1..codeNum) {

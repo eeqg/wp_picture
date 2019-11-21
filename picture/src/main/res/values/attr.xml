@@ -148,4 +148,13 @@
 		<attr name="tag_tag_space" format="dimension"/>
 		<attr name="tag_row_space" format="dimension"/>
 	</declare-styleable>
+	
+	<declare-styleable name="StarView">
+		<attr name="star_full" format="reference"/>
+		<attr name="star_empty" format="reference"/>
+		<attr name="star_half" format="reference"/>
+		<attr name="stat_num" format="integer"/>
+		<attr name="star_init_score" format="integer"/>
+		<attr name="star_indicator" format="boolean"/>
+	</declare-styleable>
 </resources>
