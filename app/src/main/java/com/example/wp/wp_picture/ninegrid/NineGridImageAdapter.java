@@ -39,6 +39,7 @@ public class NineGridImageAdapter extends NineGridViewAdapter<ImageInfoBean> {
 
     @Override
     protected View onCreateView(Context context) {
+        Log.d("picture", "-----onCreateView()--" );
         return View.inflate(context, R.layout.item_nine_grid, null);
     }
 

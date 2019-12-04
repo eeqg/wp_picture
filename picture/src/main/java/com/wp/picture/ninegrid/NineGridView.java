@@ -156,10 +156,6 @@ public class NineGridView extends ViewGroup {
                 View iv = getItemView(i);
                 if (iv == null) return;
                 addView(iv);
-
-                if (mAdapter != null) {
-                    mAdapter.onBindView(NineGridView.this, iv, i);
-                }
             }
         } else {
             int oldViewCount = mImageInfo.size();
@@ -171,11 +167,12 @@ public class NineGridView extends ViewGroup {
                     View iv = getItemView(i);
                     if (iv == null) return;
                     addView(iv);
-
-                    if (mAdapter != null) {
-                        mAdapter.onBindView(NineGridView.this, iv, i);
-                    }
                 }
+            }
+        }
+        for (int i = 0; i < imageCount; i++) {
+            if (mAdapter != null) {
+                mAdapter.onBindView(NineGridView.this, getChildAt(i), i);
             }
         }
         //修改最后一个条目，决定是否显示更多

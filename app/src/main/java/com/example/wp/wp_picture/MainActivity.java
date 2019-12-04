@@ -48,6 +48,7 @@ import com.wp.picture.widget.SimpleFloating;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -186,10 +187,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void observeNineGridView() {
-        NineGridView nineGridView = findViewById(R.id.nineGridView);
+        final NineGridView nineGridView = findViewById(R.id.nineGridView);
         String[] stringArray = getResources().getStringArray(R.array.test_num_url);
         List<String> images = Arrays.asList(stringArray);
-        ArrayList<ImageInfoBean> imageInfo = new ArrayList<>();
+        final ArrayList<ImageInfoBean> imageInfo = new ArrayList<>();
         for (int i = 0; i < images.size(); i++) {
             ImageInfoBean info = new ImageInfoBean();
             info.imgUrl = images.get(i);
@@ -205,6 +206,16 @@ public class MainActivity extends AppCompatActivity {
         info0.videoUrl = "https://cloud.video.taobao.com/play/u/2683201295/p/2/e/6/t/1/226176442207.mp4?appKey=38829";
         imageInfo.add(0, info0);
         nineGridView.setAdapter(new NineGridImageAdapter(this, imageInfo));
+
+        findViewById(R.id.refreshNine).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageInfoBean imageInfoBean = imageInfo.get(0);
+                String[] stringArray = getResources().getStringArray(R.array.url);
+                imageInfoBean.imgUrl = stringArray[new Random().nextInt(stringArray.length - 1)];
+                nineGridView.setAdapter(new NineGridImageAdapter(MainActivity.this, imageInfo));
+            }
+        });
     }
 
     private void observeBanner() {

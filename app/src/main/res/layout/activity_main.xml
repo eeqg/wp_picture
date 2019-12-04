@@ -60,6 +60,13 @@
 			android:paddingTop="10dp"
 			android:text="NineGridView" />
 		
+		<Button
+			android:id="@+id/refreshNine"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+			android:text="refresh" />
+		
 		<com.wp.picture.ninegrid.NineGridView
 			android:id="@+id/nineGridView"
 			android:layout_width="match_parent"
