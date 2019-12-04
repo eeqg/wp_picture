@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 public class NoScrollViewPager extends ViewPager {
-	private boolean canScroll = false;
+	private boolean canScroll = true;
 	
 	public NoScrollViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -18,7 +18,7 @@ public class NoScrollViewPager extends ViewPager {
 	
 	/**
 	 * 1.dispatchTouchEvent一般情况不做处理
-	 * ,如果修改了默认的返回值,子孩子都无法收到事件
+	 * ,如果修改了默认的返回值,子view都无法收到事件
 	 */
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
