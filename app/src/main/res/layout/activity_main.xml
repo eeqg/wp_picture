@@ -147,6 +147,18 @@
 				app:layout_constraintTop_toTopOf="parent" />
 		</android.support.constraint.ConstraintLayout>
 		
+		<com.wp.picture.widget.StarView
+			android:id="@+id/starView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			app:star_empty="@mipmap/ic_xing3"
+			app:star_full="@mipmap/ic_xing1"
+			app:star_half="@mipmap/ic_xing2"
+			app:star_indicator="true"
+			app:star_init_score="5"
+			app:stat_num="5" />
+		
 		<View
 			android:layout_width="match_parent"
 			android:layout_height="38dp" />

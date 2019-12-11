@@ -44,6 +44,7 @@ import com.wp.picture.utils.CommUtil;
 import com.wp.picture.video.SimpleVideoView;
 import com.wp.picture.widget.CommonViewPager;
 import com.wp.picture.widget.SimpleFloating;
+import com.wp.picture.widget.StarView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         observeScrollView();
         observeSimpleVideo();
         observeWithVideo();
+
+        observeStarView();
 
         //floating view.
         TextView textView = new TextView(this);
@@ -302,6 +305,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .execute(images);
+    }
+
+    private void observeStarView() {
+        StarView starView = findViewById(R.id.starView);
+        starView.setOnStarChangedListener(new StarView.OnStarChangedListener() {
+            @Override
+            public void onChanged(double score) {
+                android.util.Log.d("test", "-----" + score);
+            }
+        });
     }
 
     @Override

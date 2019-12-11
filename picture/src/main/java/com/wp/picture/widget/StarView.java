@@ -25,6 +25,7 @@ public class StarView extends LinearLayout {
 
     private double mStarScore;
     private int starNum;
+    private OnStarChangedListener starChangedListener;
 
     public StarView(Context context) {
         super(context);
@@ -103,6 +104,10 @@ public class StarView extends LinearLayout {
         }
     }
 
+    public void setOnStarChangedListener(OnStarChangedListener listener) {
+        this.starChangedListener = listener;
+    }
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -129,6 +134,7 @@ public class StarView extends LinearLayout {
             return super.onTouchEvent(event);
         }
 
+        double oldScore = mStarScore;
         for (int position = 0; position < starNum; position++) {
             if (mRectStars[position].contains((int) event.getX(), (int) event.getY())) {
                 for (int index = 0; index < starNum; index++) {
@@ -142,6 +148,14 @@ public class StarView extends LinearLayout {
                 break;
             }
         }
+        // android.util.Log.d("StarView", "-----" + mStarScore);
+        if (starChangedListener != null && mStarScore != oldScore) {
+            starChangedListener.onChanged(mStarScore);
+        }
         return true;
+    }
+
+    public interface OnStarChangedListener {
+        void onChanged(double score);
     }
 }
