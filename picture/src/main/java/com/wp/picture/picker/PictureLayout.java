@@ -25,39 +25,67 @@ public class PictureLayout extends ViewGroup {
 
     private final String TAG = getClass().getSimpleName();
 
-    /** 视图重用栈 */
+    /**
+     * 视图重用栈
+     */
     private Stack<View> scrapStack = new Stack<>();
 
-    /** 最多图片数量 */
+    /**
+     * 最多图片数量
+     */
     private int maxCount;
-    /** 单行图片数量 */
+    /**
+     * 单行图片数量
+     */
     private int rowCount;
 
-    /** 图片展示控件ID */
+    /**
+     * 图片展示控件ID
+     */
     private int pictureViewId = -1;
-    /** 图片展示比例 */
+    /**
+     * 图片展示比例
+     */
     private float pictureRatio;
-    /** 图片圆角大小 */
+    /**
+     * 图片圆角大小
+     */
     private float pictureRound;
-    /** 水平边界 */
+    /**
+     * 水平边界
+     */
     private int horizontalPadding;
-    /** 垂直边界 */
+    /**
+     * 垂直边界
+     */
     private int verticalPadding;
 
-    /** 编辑图标 */
+    /**
+     * 编辑图标
+     */
     private Drawable editDrawable;
 
-    /** 是否支持插入图片 */
+    /**
+     * 是否支持插入图片
+     */
     private boolean supportInsert;
-    /** 插入图片控件 */
+    /**
+     * 插入图片控件
+     */
     private ImageView ivInsert;
 
-    /** 图片操作监听 */
+    /**
+     * 图片操作监听
+     */
     private OnPictureListener onPictureListener;
 
-    /** 选中位置 */
+    /**
+     * 选中位置
+     */
     private int selectedPosition = -1;
-    /** 图片地址列表 */
+    /**
+     * 图片地址列表
+     */
     private ArrayList<Uri> pictureList = new ArrayList<>();
 
     private static ImageLoaderInterface<ImageView> imageLoader;
@@ -67,8 +95,10 @@ public class PictureLayout extends ViewGroup {
         public void onClick(View v) {
             // int position = (int) v.getTag();
             int position = (int) v.getTag(R.id.picture_view_id);
-            Log.d(TAG, "-----onClick()--position = "+position);
-            onPictureListener.onSelect(position, pictureList.get(position));
+            Log.d(TAG, "-----onClick()--position = " + position);
+            if (onPictureListener != null) {
+                onPictureListener.onSelect(position, pictureList.get(position));
+            }
         }
     };
 
@@ -839,28 +869,48 @@ public class PictureLayout extends ViewGroup {
     }
 
     private static class SavedState extends BaseSavedState {
-        /** 最多图片数量 */
+        /**
+         * 最多图片数量
+         */
         private int maxCount;
-        /** 单行图片数量 */
+        /**
+         * 单行图片数量
+         */
         private int rowCount;
 
-        /** 图片展示控件ID */
+        /**
+         * 图片展示控件ID
+         */
         private int pictureViewId;
-        /** 图片展示比例 */
+        /**
+         * 图片展示比例
+         */
         private float pictureRatio;
-        /** 图片圆角大小 */
+        /**
+         * 图片圆角大小
+         */
         private float pictureRound;
-        /** 水平边界 */
+        /**
+         * 水平边界
+         */
         private int horizontalPadding;
-        /** 垂直边界 */
+        /**
+         * 垂直边界
+         */
         private int verticalPadding;
 
-        /** 支持插入图片 */
+        /**
+         * 支持插入图片
+         */
         private boolean supportInsert;
 
-        /** 选中位置 */
+        /**
+         * 选中位置
+         */
         private int selectedPosition;
-        /** 图片地址列表 */
+        /**
+         * 图片地址列表
+         */
         private ArrayList<Uri> pictureList;
 
         @SuppressWarnings("WeakerAccess")
