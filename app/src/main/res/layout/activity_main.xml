@@ -15,7 +15,6 @@
 		android:padding="8dp"
 		tools:context=".MainActivity">
 		
-		
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -72,6 +71,14 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="20dp" />
+		
+		<com.wp.picture.ninegrid.NineGridView
+			android:id="@+id/nineGridView2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			app:ngv_gridSpacing="5dp"
+			app:ngv_singleImageSize="180dp" />
 		
 		<TextView
 			android:layout_width="match_parent"

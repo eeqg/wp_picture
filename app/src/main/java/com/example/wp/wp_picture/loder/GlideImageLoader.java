@@ -115,17 +115,17 @@ public class GlideImageLoader implements ImageLoader, com.wp.picture.video.Image
             return;
         }
         Glide.with(imageView.getContext())
-                .addDefaultRequestListener(new RequestListener<Object>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Object> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Object resource, Object model, Target<Object> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
+                // .addDefaultRequestListener(new RequestListener<Object>() {
+                //     @Override
+                //     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Object> target, boolean isFirstResource) {
+                //         return false;
+                //     }
+                //
+                //     @Override
+                //     public boolean onResourceReady(Object resource, Object model, Target<Object> target, DataSource dataSource, boolean isFirstResource) {
+                //         return false;
+                //     }
+                // })
                 .load(imageUrl)
                 .apply(options)
                 .into(imageView);
