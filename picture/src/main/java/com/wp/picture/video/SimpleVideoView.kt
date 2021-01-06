@@ -22,7 +22,7 @@ import java.io.IOException
 class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null)
     : FrameLayout(context, attrs), TextureView.SurfaceTextureListener {
     private final val TAG = "SimpleVideoView"
-    private val printLogFlag = true
+    private val printLogFlag = false
 
     private var mInitWidth = 0
     private var mInitHeight = 0
@@ -285,7 +285,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    internal fun pausePlay() {
+    fun pausePlay() {
         printLog("-----pausePlay()")
         if (mMediaPlayer != null) {
             mMediaPlayer!!.pause()
@@ -293,7 +293,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    internal fun stopPlay() {
+    fun stopPlay() {
         printLog("-----stopPlay()")
         if (mMediaPlayer != null) {
             mMediaPlayer?.stop()
@@ -301,7 +301,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    internal fun enterFullScreen() {
+    fun enterFullScreen() {
         if (mScreenType == TYPE_SCREEN_FULL) {
             return
         }
@@ -330,7 +330,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    internal fun enterTinyScreen() {
+    fun enterTinyScreen() {
         if (mScreenType == TYPE_SCREEN_TINY) {
             return
         }
@@ -360,7 +360,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    internal fun enterNormalScreen() {
+    fun enterNormalScreen() {
         if (mScreenType == TYPE_SCREEN_NORMAL) {
             return
         }
@@ -380,7 +380,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    internal fun turnOffVolume() {
+    fun turnOffVolume() {
         if (mMediaPlayer != null) {
             mMediaPlayer!!.setVolume(0f, 0f)
         }
