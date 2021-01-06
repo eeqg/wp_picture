@@ -22,8 +22,10 @@ import java.io.IOException
 class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null)
     : FrameLayout(context, attrs), TextureView.SurfaceTextureListener {
     private final val TAG = "SimpleVideoView"
-    private val printLog = true
+    private val printLogFlag = true
 
+    private var mInitWidth = 0
+    private var mInitHeight = 0
     private lateinit var mVideoInfo: VideoInfo
     private var mImageLoader: ImageLoader? = null
 
@@ -35,8 +37,6 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     private var mMediaPlayer: MediaPlayer? = null
     private var mActivity: Activity? = null
 
-    private var mScreenWidth = 0
-    private var mScreenHeight = 0
     private var mTinyWidth = 0
     private var mCurrentState = STATE_IDLE
     private var mScreenType = TYPE_SCREEN_NORMAL
@@ -70,9 +70,14 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         addView(mContainer, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT))
         mActivity = getActivity(context)
-        mScreenWidth = CommUtil.getScreenWidth(context)
-        mScreenHeight = CommUtil.getScreenHeight(context)
-        mTinyWidth = (mScreenWidth * 0.38).toInt()
+        mTinyWidth = (CommUtil.getScreenWidth(context) * 0.38).toInt()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (mInitWidth == 0) mInitWidth = w
+        if (mInitHeight == 0) mInitHeight = h
+        printLog("-----onSizeChanged()--mInitWidth = $mInitWidth, mInitHeight = $mInitHeight")
     }
 
     fun setImageLoader(loader: ImageLoader): SimpleVideoView {
@@ -94,9 +99,9 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
             surfaceTextureListener = this@SimpleVideoView
         }
         mContainer.addView(mTextureView, 0,
-                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         mContainer.addView(mController.getControllerView(),
-                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 
     fun getMediaPlayer(): MediaPlayer? {
@@ -145,23 +150,23 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
         val textureViewWidth: Int
         val textureViewHeight: Int
-//        printLog("-----parentWidth = $parentWidth")
-//        printLog("-----parentHeight = $parentHeight")
-//        printLog("-----videoHeight = ${mMediaPlayer!!.videoHeight}")
-//        printLog("-----videoWidth = ${mMediaPlayer!!.videoWidth}")
+        printLog("-----type = ${this.getScreenType()}")
+        printLog("-----parentHeight = $parentHeight , parentWidth = $parentWidth")
+        val viewAspectRatio = parentWidth * 1.0 / parentHeight
+        printLog("-----viewAspectRatio : $viewAspectRatio")
+        printLog("-----videoHeight = ${mMediaPlayer!!.videoHeight}, videoWidth = ${mMediaPlayer!!.videoWidth}")
         val videoAspectRatio = mMediaPlayer!!.videoWidth * 1.0 / mMediaPlayer!!.videoHeight
-//        printLog("-----videoAspectRatio : $videoAspectRatio")
-        if (videoAspectRatio > 1) {
-            textureViewWidth = parentWidth
-            textureViewHeight = (textureViewWidth * (1.0 / videoAspectRatio)).toInt()
-        } else {
+        printLog("-----videoAspectRatio : $videoAspectRatio")
+        if (viewAspectRatio > videoAspectRatio) {
             textureViewHeight = parentHeight
             textureViewWidth = (textureViewHeight * videoAspectRatio).toInt()
+        } else {
+            textureViewWidth = parentWidth
+            textureViewHeight = (textureViewWidth * (1.0 / videoAspectRatio)).toInt()
         }
-//        printLog("-----textureViewWidth = $textureViewWidth")
-//        printLog("-----textureViewHeight = $textureViewHeight")
+        printLog("-----textureViewWidth = $textureViewWidth, textureViewHeight = $textureViewHeight")
 
-        val layoutParams = mTextureView.layoutParams as FrameLayout.LayoutParams
+        val layoutParams = mTextureView.layoutParams as LayoutParams
         layoutParams.width = textureViewWidth
         layoutParams.height = textureViewHeight
         layoutParams.gravity = Gravity.CENTER
@@ -180,7 +185,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
                 setOnCompletionListener { setState(STATE_COMPLETED) }
                 setOnBufferingUpdateListener { mp, percent ->
-                    printLog("-----onBufferingUpdate--percent = $percent")
+                    //printLog("-----onBufferingUpdate--percent = $percent")
                     mController.onBufferingChanged(percent / 100.0)
                 }
                 setOnErrorListener { mp, what, extra ->
@@ -217,6 +222,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun setState(state: Int) {
         mCurrentState = state
+        printLog("-----setState() : mCurrentState = $mCurrentState")
         mController.onStateChanged(mCurrentState)
     }
 
@@ -226,11 +232,11 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
         when (type) {
             TYPE_SCREEN_NORMAL ->
-                fixVideoViewAspect(width, height)
+                fixVideoViewAspect(mInitWidth, mInitHeight)
             TYPE_SCREEN_TINY ->
                 fixVideoViewAspect(mTinyWidth, mTinyWidth)
             TYPE_SCREEN_FULL ->
-                fixVideoViewAspect(mScreenHeight, mScreenWidth)
+                fixVideoViewAspect(CommUtil.getScreenHeight(context), CommUtil.getScreenWidth(context))//横屏了宽高取反
         }
     }
 
@@ -279,21 +285,23 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun pausePlay() {
+    internal fun pausePlay() {
+        printLog("-----pausePlay()")
         if (mMediaPlayer != null) {
             mMediaPlayer!!.pause()
             setState(STATE_PAUSED)
         }
     }
 
-    fun stopPlay() {
+    internal fun stopPlay() {
+        printLog("-----stopPlay()")
         if (mMediaPlayer != null) {
             mMediaPlayer?.stop()
             setState(STATE_STOPPED)
         }
     }
 
-    fun enterFullScreen() {
+    internal fun enterFullScreen() {
         if (mScreenType == TYPE_SCREEN_FULL) {
             return
         }
@@ -322,7 +330,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun enterTinyScreen() {
+    internal fun enterTinyScreen() {
         if (mScreenType == TYPE_SCREEN_TINY) {
             return
         }
@@ -352,7 +360,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun enterNormalScreen() {
+    internal fun enterNormalScreen() {
         if (mScreenType == TYPE_SCREEN_NORMAL) {
             return
         }
@@ -364,8 +372,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                 contentRoot = mActivity?.findViewById(android.R.id.content)
             }
 
-            val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
+            val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             contentRoot?.removeView(mContainer)
             this.addView(mContainer, layoutParams)
 
@@ -373,7 +380,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun turnOffVolume() {
+    internal fun turnOffVolume() {
         if (mMediaPlayer != null) {
             mMediaPlayer!!.setVolume(0f, 0f)
         }
@@ -403,6 +410,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 //            mAudioManager.abandonAudioFocus(null)
 //            mAudioManager = null
 //        }
+        printLog("-----releasePlayer()")
         mMediaPlayer?.release()
         if (mSurfaceTexture != null) {
             mSurfaceTexture!!.release()
@@ -411,22 +419,25 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun onPause() {
+        printLog("-----onPause()")
         if (isPlaying()) {
-            mMediaPlayer?.pause()
-            mController.onPaused()
+            pausePlay()
         }
     }
 
     fun onStop() {
+        printLog("-----onStop()")
         if (isPlaying()) {
-            mMediaPlayer?.stop()
-            mController.onPaused()
+            stopPlay()
         }
     }
 
     fun onDestroy() {
-        mMediaPlayer?.stop()
-        mMediaPlayer?.release()
+        printLog("-----onDestroy()")
+        if (isPlaying()) {
+            mMediaPlayer?.stop()
+            mMediaPlayer?.release()
+        }
         mController.onDestroyed()
     }
 
@@ -439,8 +450,8 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         super.onDetachedFromWindow()
     }
 
-    fun printLog(msg: String) {
-        if (printLog) Log.d(TAG, msg)
+    private fun printLog(msg: String) {
+        if (printLogFlag) Log.d(TAG, msg)
     }
 
     private fun getActivity(context: Context?): Activity? {

@@ -19,7 +19,5 @@ interface VideoController {
 
     fun onScreenTypeChanged(type: Int)
 
-    fun onPaused()
-
     fun onDestroyed()
 }

@@ -61,8 +61,15 @@ public class MainActivity extends AppCompatActivity {
 	private final String picUrl3 = "http://img2.woyaogexing.com/2018/01/25/991349aa8c98c502!500x500.jpg";
 	private final String picUrl4 = "https://img.alicdn.com/bao/uploaded/i4/642874349/O1CN01XoCmT91hzsxinFho2_!!642874349.jpg";
 	
-	private String videoUrl = "https://flv2.bn.netease.com/videolib1/1811/26/OqJAZ893T/HD/OqJAZ893T-mobile.mp4";
-	private String videoUrl2 = "http://lusl-goods.oss-cn-shenzhen.aliyuncs.com/adminVideo/3677041.mp4";
+	//private String videoUrl = "https://flv2.bn.netease.com/videolib1/1811/26/OqJAZ893T/HD/OqJAZ893T-mobile.mp4";
+	//private String videoUrl2 = "http://lusl-goods.oss-cn-shenzhen.aliyuncs.com/adminVideo/3677041.mp4";
+	private String videoUrl2 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-33-30.mp4";
+	private String videoUrl3 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-20-26.mp4";
+	private String thumb3 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg";
+	private String videoUrl4 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-03_13-02-41.mp4";
+	private String thumb4 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-03_12-52-08.jpg";
+	private String videoUrl5 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/04/2017-04-28_18-20-56.mp4";
+	private String thumb5 = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/04/2017-04-28_18-18-22.jpg";
 	
 	private ImageView ivSample;
 	private PictureLayout pictureLayout;
@@ -259,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 	private void observeSimpleVideo() {
 		simpleVideo = findViewById(R.id.simpleVideo);
 		SimpleVideoView.VideoInfo videoInfo = new SimpleVideoView.VideoInfo(
-				videoUrl
+				videoUrl3
 				, "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
 				"title");
 		simpleVideo.setImageLoader(new GlideImageLoader()).setup(videoInfo);
@@ -293,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
 							simpleVideoView = new SimpleVideoView(MainActivity.this);
 							view.addView(simpleVideoView);
 							SimpleVideoView.VideoInfo videoInfo = new SimpleVideoView.VideoInfo(
-									videoUrl
+									videoUrl3
 									, "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
 									"title");
 							simpleVideoView.setImageLoader(GlideImageLoader.getInstance()).setup(videoInfo);
@@ -307,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
 					@Override
 					public void onItemSelected(Object data, int position) {
 						if (position != 0) {
-							simpleVideoView.stopPlay();
+							simpleVideoView.onPause();
 						}
 					}
 				})

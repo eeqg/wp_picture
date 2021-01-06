@@ -225,9 +225,9 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         }
     }
 
-    override fun onPaused() {
-        mHandler.removeMessages(MSG_UPDATE_TIME)
-    }
+//    override fun onPaused() {
+//        mHandler.removeMessages(MSG_UPDATE_TIME)
+//    }
 
     override fun onDestroyed() {
         mHandler.removeMessages(MSG_UPDATE_TIME)
@@ -283,6 +283,10 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
 
     fun pausePlay() {
         mVideoView.pausePlay()
+    }
+
+    fun stopPlay() {
+        mVideoView.stopPlay()
     }
 
     fun releasePlayer() {
