@@ -13,6 +13,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
+import com.wp.picture.common.ext.dp2px
 import com.wp.picture.utils.CommUtil
 import java.io.IOException
 
@@ -38,6 +39,9 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     private var mActivity: Activity? = null
 
     private var mTinyWidth = 0
+    private var mTinyWindowRightMargin = context.dp2px(12f)
+    private var mTinyWindowTopMargin = mTinyWindowRightMargin
+    private var mTinyWindowWrapped = false
     private var mCurrentState = STATE_IDLE
     private var mScreenType = TYPE_SCREEN_NORMAL
 
@@ -73,15 +77,23 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         mTinyWidth = (CommUtil.getScreenWidth(context) * 0.38).toInt()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        if (mInitWidth == 0) mInitWidth = w
-        if (mInitHeight == 0) mInitHeight = h
-        printLog("-----onSizeChanged()--mInitWidth = $mInitWidth, mInitHeight = $mInitHeight")
-    }
-
     fun setImageLoader(loader: ImageLoader): SimpleVideoView {
         this.mImageLoader = loader
+        return this
+    }
+
+    fun setTinyWindowFix(value: Boolean): SimpleVideoView {
+        mTinyWindowWrapped = value
+        return this
+    }
+
+    fun setTinyWindowTopMargin(value: Int): SimpleVideoView {
+        this.mTinyWindowTopMargin = context.dp2px(value.toFloat())
+        return this
+    }
+
+    fun setTinyWindowRightMargin(value: Int): SimpleVideoView {
+        this.mTinyWindowRightMargin = context.dp2px(value.toFloat())
         return this
     }
 
@@ -114,6 +126,13 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun getScreenType(): Int {
         return mScreenType
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (mInitWidth == 0) mInitWidth = w
+        if (mInitHeight == 0) mInitHeight = h
+        printLog("-----onSizeChanged()--mInitWidth = $mInitWidth, mInitHeight = $mInitHeight")
     }
 
     //初始化好SurfaceTexture后调用
@@ -340,20 +359,24 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                 contentRoot = mActivity?.findViewById(android.R.id.content)
             }
             this.removeView(mContainer)
-            val width: Int
-            val height: Int
-            val videoAspectRatio = mMediaPlayer!!.videoWidth * 1.0 / mMediaPlayer!!.videoHeight
-            if (videoAspectRatio > 1) {
-                width = mTinyWidth
-                height = (mTinyWidth * (1.0 / videoAspectRatio)).toInt()
-            } else {
-                width = mTinyWidth
-                height = mTinyWidth
+
+            var width: Int = mTinyWidth
+            var height: Int = mTinyWidth
+            if (mTinyWindowWrapped) {
+                //小窗口大小按视频大小@{
+                val videoAspectRatio = mMediaPlayer!!.videoWidth * 1.0 / mMediaPlayer!!.videoHeight
+                if (videoAspectRatio > 1) {
+                    width = mTinyWidth
+                    height = (mTinyWidth * (1.0 / videoAspectRatio)).toInt()
+                } else {
+                    width = mTinyWidth
+                    height = mTinyWidth
+                }
             }
             val layoutParams = LayoutParams(width, height)
             layoutParams.gravity = Gravity.END or Gravity.TOP
-            layoutParams.rightMargin = 16
-            layoutParams.topMargin = 16
+            layoutParams.rightMargin = mTinyWindowRightMargin
+            layoutParams.topMargin = mTinyWindowTopMargin
             contentRoot?.addView(mContainer, layoutParams)
 
             setScreenType(TYPE_SCREEN_TINY)
