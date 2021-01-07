@@ -1,128 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
-	
-	<ImageView
-		android:id="@+id/ivThumb"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:src="#80000000" />
-	
-	<LinearLayout
-		android:id="@+id/llTitleBar"
-		android:layout_width="match_parent"
-		android:layout_height="28dp"
-		android:background="@drawable/player_mask_top"
-		android:gravity="center_vertical">
-		
-		<ImageView
-			android:id="@+id/ivBack"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_chevron_left_white_24dp"
-			android:visibility="gone"
-			tools:visibility="visible" />
-		
-		<TextView
-			android:id="@+id/tvTitle"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
-			android:layout_weight="1"
-			android:textColor="@color/colorWhite"
-			android:textSize="13sp"
-			tools:text="title" />
-		
-		<ImageView
-			android:id="@+id/ivClose"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_cancel"
-			android:layout_margin="4dp"
-			android:visibility="gone"
-			tools:visibility="visible" />
-	</LinearLayout>
-	
-	<ImageView
-		android:id="@+id/ivPlayState"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		android:scaleType="centerInside"
-		android:src="@drawable/ic_player_center_start" />
-	
-	<ProgressBar
-		android:id="@+id/progressBar"
-		android:layout_width="32dp"
-		android:layout_height="32dp"
-		android:layout_centerInParent="true"
-		android:visibility="gone"
-		tools:visibility="visible" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-	<ImageView
-		android:id="@+id/ivVolumeOff"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentEnd="true"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentBottom="true"
-		android:paddingLeft="5dp"
-		android:paddingRight="5dp"
-		android:layout_marginEnd="3dp"
-		android:layout_marginRight="3dp"
-		android:layout_marginBottom="38dp"
-		android:src="@drawable/ic_voice_on"
-		android:background="@drawable/bg_voice"
-		android:visibility="gone"
-		tools:visibility="visible" />
-	
-	<LinearLayout
-		android:id="@+id/llBottomBar"
-		android:layout_width="match_parent"
-		android:layout_height="40dp"
-		android:layout_alignParentBottom="true"
-		android:background="@drawable/player_mask_bottom"
-		android:gravity="center_vertical"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp">
-		
-		<ImageView
-			android:id="@+id/ivStartOrPause"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_player_start" />
-		
-		<SeekBar
-			android:id="@+id/seekBar"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:background="@null"
-			android:maxHeight="1.5dp"
-			android:minHeight="1.5dp"
-			android:progressDrawable="@drawable/seek_progress"
-			android:thumb="@drawable/seek_thumb" />
-		
-		<TextView
-			android:id="@+id/tvTime"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="00:00 / 00:00"
-			android:textColor="@color/colorWhite"
-			android:textSize="9sp" />
-		
-		<ImageView
-			android:id="@+id/ivChangeType"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="10dp"
-			android:layout_marginLeft="10dp"
-			android:src="@drawable/ic_player_enlarge" />
-	</LinearLayout>
+    <ImageView
+        android:id="@+id/ivThumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="#80000000" />
+
+    <LinearLayout
+        android:id="@+id/llTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@drawable/player_mask_top"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_back_video"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorWhite"
+            android:textSize="13sp"
+            tools:text="title" />
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:padding="2dp"
+            android:src="@mipmap/ic_close_video"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivPlayState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_player_center_start" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ivVolumeOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/bg_voice"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:src="@mipmap/ic_volume_on"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/llBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/player_mask_bottom"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@+id/ivStartOrPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_player_start" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:maxHeight="1.5dp"
+            android:minHeight="1.5dp"
+            android:progressDrawable="@drawable/seek_progress"
+            android:thumb="@drawable/seek_thumb" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00 / 00:00"
+            android:textColor="@color/colorWhite"
+            android:textSize="9sp" />
+
+        <ImageView
+            android:id="@+id/ivChangeType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_player_enlarge" />
+    </LinearLayout>
 </RelativeLayout>

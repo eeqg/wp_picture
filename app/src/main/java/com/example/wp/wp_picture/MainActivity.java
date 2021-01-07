@@ -152,15 +152,13 @@ public class MainActivity extends AppCompatActivity {
                 final boolean videoVisible = CommUtil.isVisibleLocal(simpleVideo);
                 // Log.d("-----", "videoVisible : " + videoVisible);
                 // Log.d("-----", "simpleVideo.isPlaying() : " + simpleVideo.isPlaying());
-                if (simpleVideo.isPlaying()) {
-                    if (videoVisible) {
-                        if (simpleVideo.isTinyModel()) {
-                            simpleVideo.enterNormalScreen();
-                        }
-                    } else {
-                        if (simpleVideo.isNormalModel()) {
-                            simpleVideo.enterTinyScreen();
-                        }
+                if (videoVisible) {
+                    if (simpleVideo.isTinyModel()) {
+                        simpleVideo.enterNormalScreen();
+                    }
+                } else {
+                    if (simpleVideo.isNormalModel() && simpleVideo.isPlaying()) {
+                        simpleVideo.enterTinyScreen();
                     }
                 }
             }
@@ -270,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
                 , "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
                 "title");
         simpleVideo.setImageLoader(new GlideImageLoader())
+                .setTinyWindowAdaptive(true)
                 .setTinyWindowTopMargin(25)
                 .setup(videoInfo);
 

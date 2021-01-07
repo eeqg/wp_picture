@@ -22,7 +22,7 @@ import java.io.IOException
  */
 class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null)
     : FrameLayout(context, attrs), TextureView.SurfaceTextureListener {
-    private final val TAG = "SimpleVideoView"
+    private val TAG = "SimpleVideoView"
     private val printLogFlag = false
 
     private var mInitWidth = 0
@@ -41,7 +41,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
     private var mTinyWidth = 0
     private var mTinyWindowRightMargin = context.dp2px(12f)
     private var mTinyWindowTopMargin = mTinyWindowRightMargin
-    private var mTinyWindowWrapped = false
+    private var mTinyWindowAdaptive = false
     private var mCurrentState = STATE_IDLE
     private var mScreenType = TYPE_SCREEN_NORMAL
 
@@ -82,8 +82,8 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         return this
     }
 
-    fun setTinyWindowFix(value: Boolean): SimpleVideoView {
-        mTinyWindowWrapped = value
+    fun setTinyWindowAdaptive(value: Boolean): SimpleVideoView {
+        mTinyWindowAdaptive = value
         return this
     }
 
@@ -135,7 +135,9 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         printLog("-----onSizeChanged()--mInitWidth = $mInitWidth, mInitHeight = $mInitHeight")
     }
 
-    //初始化好SurfaceTexture后调用
+    /**
+     * 初始化好SurfaceTexture后调用
+     */
     override fun onSurfaceTextureAvailable(surfaceTexture: SurfaceTexture, width: Int, height: Int) {
         printLog("-----onSurfaceTextureAvailable()")
         // start(new Surface(surface));
@@ -148,19 +150,23 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    //尺寸改变后调用
+    /**
+     * 尺寸改变后调用
+     */
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
-
     }
 
-    //SurfaceTexture即将被销毁时调用
+    /**
+     * SurfaceTexture即将被销毁时调用
+     */
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
         return mSurfaceTexture == null
     }
 
-    //通过SurfaceTexture.updateteximage()更新SurfaceTexture时调用
+    /**
+     * 通过SurfaceTexture.updateteximage()更新SurfaceTexture时调用
+     */
     override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-
     }
 
     private fun fixVideoViewAspect(parentWidth: Int, parentHeight: Int) {
@@ -169,7 +175,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
         val textureViewWidth: Int
         val textureViewHeight: Int
-        printLog("-----type = ${this.getScreenType()}")
+        printLog("-----fixVideoViewAspect()--getScreenType = ${this.getScreenType()}")
         printLog("-----parentHeight = $parentHeight , parentWidth = $parentWidth")
         val viewAspectRatio = parentWidth * 1.0 / parentHeight
         printLog("-----viewAspectRatio : $viewAspectRatio")
@@ -200,7 +206,8 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                 setDataSource(context, Uri.parse(mVideoInfo.videoUrl))
                 setOnPreparedListener {
                     setState(STATE_PREPARED)
-                    setScreenType(TYPE_SCREEN_NORMAL)
+                    printLog("-----initMediaPlayer()--mScreenType = $mScreenType")
+                    setScreenType(mScreenType)
                 }
                 setOnCompletionListener { setState(STATE_COMPLETED) }
                 setOnBufferingUpdateListener { mp, percent ->
@@ -247,9 +254,10 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun setScreenType(type: Int) {
         mScreenType = type
+        printLog("-----setScreenType : $mScreenType")
         mController.onScreenTypeChanged(mScreenType)
 
-        when (type) {
+        when (mScreenType) {
             TYPE_SCREEN_NORMAL ->
                 fixVideoViewAspect(mInitWidth, mInitHeight)
             TYPE_SCREEN_TINY ->
@@ -362,7 +370,7 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
 
             var width: Int = mTinyWidth
             var height: Int = mTinyWidth
-            if (mTinyWindowWrapped) {
+            if (mTinyWindowAdaptive) {
                 //小窗口大小按视频大小@{
                 val videoAspectRatio = mMediaPlayer!!.videoWidth * 1.0 / mMediaPlayer!!.videoHeight
                 if (videoAspectRatio > 1) {
@@ -388,18 +396,16 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
             return
         }
         post {
-            var contentRoot: ViewGroup? = null
             mActivity?.apply {
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                contentRoot = mActivity?.findViewById(android.R.id.content)
+                val contentRoot: ViewGroup? = this.findViewById(android.R.id.content)
+                val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                contentRoot?.removeView(mContainer)
+                addView(mContainer, layoutParams)
+
+                setScreenType(TYPE_SCREEN_NORMAL)
             }
-
-            val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            contentRoot?.removeView(mContainer)
-            this.addView(mContainer, layoutParams)
-
-            setScreenType(TYPE_SCREEN_NORMAL)
         }
     }
 

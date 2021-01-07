@@ -103,10 +103,10 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         ivVolumeOff.setOnClickListener {
             if (volumeOn) {
                 mVideoView.turnOffVolume()
-                ivVolumeOff.setImageResource(R.drawable.ic_voice_off)
+                ivVolumeOff.setImageResource(R.mipmap.ic_volume_off)
             } else {
                 mVideoView.turnOnVolume()
-                ivVolumeOff.setImageResource(R.drawable.ic_voice_on)
+                ivVolumeOff.setImageResource(R.mipmap.ic_volume_on)
             }
             volumeOn = !volumeOn
         }
