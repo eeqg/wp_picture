@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.wp.picture.R;
+import com.wp.picture.banner.pager.BannerPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 public class CommonViewPager extends FrameLayout {
     private int scaledTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
 
-    private NoScrollViewPager viewPager;
+    private BannerPager viewPager;
     private List<View> viewList = new ArrayList<>();
     private List<Object> dataList = new ArrayList<>();
 
@@ -36,6 +37,7 @@ public class CommonViewPager extends FrameLayout {
     private float mLastX, mLastY;
     private float widthOffset = 1f;
     private LinearLayout llRoot;
+    protected boolean isVertical = false;
     protected boolean multiPage = false;
     protected int itemPagerWidth;
 
@@ -108,6 +110,11 @@ public class CommonViewPager extends FrameLayout {
         return this;
     }
 
+    public CommonViewPager setVertical(boolean value) {
+        this.isVertical = value;
+        return this;
+    }
+
     public CommonViewPager setMultiPage(boolean multiPage) {
         this.multiPage = multiPage;
         llRoot.setClipChildren(false);
@@ -133,6 +140,10 @@ public class CommonViewPager extends FrameLayout {
 
         if (itemSelectedListener != null) {
             this.viewPager.addOnPageChangeListener(pageChangeListener);
+        }
+        if (isVertical) {
+            viewPager.setOverScrollMode(ViewPager.OVER_SCROLL_NEVER);
+            viewPager.setVertical(isVertical);
         }
         if (multiPage) {
             observeMultiPage();
