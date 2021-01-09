@@ -237,8 +237,8 @@ public class MainActivity extends AppCompatActivity {
         Banner banner = findViewById(R.id.banner);
         String[] stringArray = getResources().getStringArray(R.array.url4);
         List<String> images = Arrays.asList(stringArray);
-        banner.setViewIndex(BaseBanner.VERTICAL)
-                .setOrientation(1)
+        banner.setViewIndex(1)
+                //.setOrientation(1)//orientation
                 .createView(new CreateViewCallBack() {
                     @Override
                     public View createView(Context context, ViewGroup parent, int viewType, int viewIndex) {

@@ -1,173 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/scrollView"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-	
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:gravity="center_horizontal"
-		android:orientation="vertical"
-		android:padding="8dp"
-		tools:context=".MainActivity">
-		
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="10dp"
-			android:text="sample!" />
-		
-		<ImageView
-			android:id="@+id/ivSample"
-			android:layout_width="200dp"
-			android:layout_height="200dp"
-			android:layout_marginTop="15dp" />
-		
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			android:background="#30808080"
-			android:paddingTop="10dp"
-			android:text="PictureLayout" />
-		
-		<com.wp.picture.picker.PictureLayout
-			android:id="@+id/pictureLayout"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"
-			app:layout_constraintTop_toTopOf="parent"
-			app:picture_editDrawable="@mipmap/ic_del"
-			app:picture_horizontalPadding="5dp"
-			app:picture_insertBackground="@mipmap/ic_tianjiatupian"
-			app:picture_maxCount="10"
-			app:picture_pictureRatio="1"
-			app:picture_rowCount="5"
-			app:picture_supportInsert="true"
-			app:picture_verticalPadding="5dp" />
-		
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			android:background="#30808080"
-			android:paddingTop="10dp"
-			android:text="NineGridView" />
-		
-		<Button
-			android:id="@+id/refreshNine"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="end"
-			android:text="refresh" />
-		
-		<com.wp.picture.ninegrid.NineGridView
-			android:id="@+id/nineGridView"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp" />
-		
-		<com.wp.picture.ninegrid.NineGridView
-			android:id="@+id/nineGridView2"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"
-			app:ngv_gridSpacing="5dp"
-			app:ngv_singleImageSize="180dp" />
-		
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			android:background="#30808080"
-			android:paddingTop="10dp"
-			android:text="banner" />
-		
-		<com.wp.picture.banner.Banner
-			android:id="@+id/banner"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			app:banner_auto_play="false"
-			app:banner_interval="3000"
-			app:banner_loop="true"
-			app:height_ratio="0.436">
-			
-			<com.wp.picture.banner.IndicatorLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom|end"
-				android:layout_marginEnd="12dp"
-				android:layout_marginRight="12dp"
-				android:layout_marginBottom="12dp"
-				android:background="@drawable/bg_transparent_50_r10"
-				android:gravity="center"
-				android:paddingLeft="5dp"
-				android:paddingRight="5dp"
-				app:il_indicator_height="5dp"
-				app:il_indicator_margin="3dp"
-				app:il_indicator_selected="@color/colorAccent"
-				app:il_indicator_unselected="@color/colorWhite"
-				app:il_indicator_width="5dp" />
-		</com.wp.picture.banner.Banner>
-		
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			android:background="#30808080"
-			android:paddingTop="10dp"
-			android:text="video" />
-		
-		<com.wp.picture.video.SimpleVideoView
-			android:id="@+id/simpleVideo"
-			android:layout_width="match_parent"
-			android:layout_height="200dp" />
-		
-		<Button
-			android:id="@+id/btnStopPlay"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="end"
-			android:text="stop_play" />
-		
-		<com.wp.picture.widget.CommonViewPager
-			android:id="@+id/viewPager"
-			android:layout_width="match_parent"
-			android:layout_height="200dp"
-			android:layout_marginTop="10dp" />
-		
-		<android.support.constraint.ConstraintLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp">
-			
-			<com.wp.picture.widget.VerificationCodeView
-				android:id="@+id/verificationCodeView"
-				android:layout_width="100dp"
-				android:layout_height="50dp"
-				app:layout_constraintTop_toTopOf="parent" />
-		</android.support.constraint.ConstraintLayout>
-		
-		<com.wp.picture.widget.StarView
-			android:id="@+id/starView"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			app:star_empty="@mipmap/ic_xing3"
-			app:star_full="@mipmap/ic_xing1"
-			app:star_half="@mipmap/ic_xing2"
-			app:star_indicator="true"
-			app:star_init_score="5"
-			app:stat_num="5" />
-		
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="38dp" />
-	</LinearLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="8dp"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="sample!" />
+
+        <ImageView
+            android:id="@+id/ivSample"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#30808080"
+            android:paddingTop="10dp"
+            android:text="PictureLayout" />
+
+        <com.wp.picture.picker.PictureLayout
+            android:id="@+id/pictureLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:picture_editDrawable="@mipmap/ic_del"
+            app:picture_horizontalPadding="5dp"
+            app:picture_insertBackground="@mipmap/ic_tianjiatupian"
+            app:picture_maxCount="10"
+            app:picture_pictureRatio="1"
+            app:picture_rowCount="5"
+            app:picture_supportInsert="true"
+            app:picture_verticalPadding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#30808080"
+            android:paddingTop="10dp"
+            android:text="NineGridView" />
+
+        <Button
+            android:id="@+id/refreshNine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="refresh" />
+
+        <com.wp.picture.ninegrid.NineGridView
+            android:id="@+id/nineGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" />
+
+        <com.wp.picture.ninegrid.NineGridView
+            android:id="@+id/nineGridView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:ngv_gridSpacing="5dp"
+            app:ngv_singleImageSize="180dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#30808080"
+            android:paddingTop="10dp"
+            android:text="banner" />
+
+        <com.wp.picture.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:banner_auto_play="false"
+            app:banner_interval="3000"
+            app:banner_loop="true"
+            app:height_ratio="0.436">
+
+            <!--			<com.wp.picture.banner.IndicatorLayout-->
+            <!--				android:layout_width="wrap_content"-->
+            <!--				android:layout_height="wrap_content"-->
+            <!--				android:layout_gravity="bottom|end"-->
+            <!--				android:layout_marginEnd="12dp"-->
+            <!--				android:layout_marginRight="12dp"-->
+            <!--				android:layout_marginBottom="12dp"-->
+            <!--				android:background="@drawable/bg_transparent_50_r10"-->
+            <!--				android:gravity="center"-->
+            <!--				android:paddingLeft="5dp"-->
+            <!--				android:paddingRight="5dp"-->
+            <!--				app:il_indicator_height="5dp"-->
+            <!--				app:il_indicator_margin="3dp"-->
+            <!--				app:il_indicator_selected="@color/colorAccent"-->
+            <!--				app:il_indicator_unselected="@color/colorWhite"-->
+            <!--				app:il_indicator_width="5dp" />-->
+
+            <com.wp.picture.banner.NumberIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="12dp" />
+        </com.wp.picture.banner.Banner>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#30808080"
+            android:paddingTop="10dp"
+            android:text="video" />
+
+        <com.wp.picture.video.SimpleVideoView
+            android:id="@+id/simpleVideo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <Button
+            android:id="@+id/btnStopPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="stop_play" />
+
+        <com.wp.picture.widget.CommonViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.wp.picture.widget.VerificationCodeView
+                android:id="@+id/verificationCodeView"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <com.wp.picture.widget.StarView
+            android:id="@+id/starView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:star_empty="@mipmap/ic_xing3"
+            app:star_full="@mipmap/ic_xing1"
+            app:star_half="@mipmap/ic_xing2"
+            app:star_indicator="true"
+            app:star_init_score="5"
+            app:stat_num="5" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="38dp" />
+    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -12,18 +12,21 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wp.picture.banner.core.IndicatorAble;
 
+import java.util.Locale;
+
 public class NumberIndicator extends LinearLayout implements IndicatorAble {
 
     private Context mContext;
     private TextView tvContent;
 
-    private float mRadius = 6f;
+    private float mRadius = 8f;
     private float mStrokeWidth = 0;
     private int mStrokeColor = Color.TRANSPARENT;
     private Path mBoundPath = null;
@@ -37,8 +40,8 @@ public class NumberIndicator extends LinearLayout implements IndicatorAble {
 
     private void init(Context context) {
         mContext = context;
-        setBackgroundColor(Color.parseColor("#88000000"));
-        setPadding(10, 5, 10, 5);
+        setBackgroundColor(Color.parseColor("#80000000"));
+        setPadding(10, 2, 10, 2);
         tvContent = new TextView(context);
         tvContent.setTextColor(Color.WHITE);
         tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
@@ -73,12 +76,15 @@ public class NumberIndicator extends LinearLayout implements IndicatorAble {
 
     @Override
     public void onBannerSelected(int position, int size, Object object) {
-        tvContent.setText(position + 1 + "/" + size);
+        tvContent.setText(String.format(Locale.CHINA, "%d/%d", position + 1, size));
     }
 
     @Override
     public void initIndicator(int size) {
-
+        if (size < 1) {
+            return;
+        }
+        tvContent.setText(String.format(Locale.CHINA, "1/%d", size));
     }
 
     public void draw(Canvas canvas) {
@@ -93,11 +99,10 @@ public class NumberIndicator extends LinearLayout implements IndicatorAble {
 
     //在绘制前计算出可以剪裁的矩形区域,并根据矩形区域设置自己的形状Path.
     private void beforeDraw(Canvas canvas) {
-        Rect rect = new Rect();
-        getLocalVisibleRect(rect);
+        Rect rect = new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight());
+//        getLocalVisibleRect(rect);
         mBoundPath = onCaculatePath(rect);
         canvas.clipPath(mBoundPath);
-
     }
 
     private void afterDraw(Canvas canvas) {
@@ -135,15 +140,15 @@ public class NumberIndicator extends LinearLayout implements IndicatorAble {
     }
 
     private Path getPathWithinStroke(Rect r, Path path) {
-        if (mStrokeWidth <= 0){
+        if (mStrokeWidth <= 0) {
             return path;
         }
         // 防止边过宽,完全遮挡内容.
         int minWidth = r.width() > r.height() ? r.height() : r.width();
-        if (minWidth <= 0){
+        if (minWidth <= 0) {
             return null;
         }
-        if (mStrokeWidth >= minWidth / 2){
+        if (mStrokeWidth >= minWidth / 2) {
             mStrokeWidth = minWidth / 2.5f;
         }
         Path p = new Path();
@@ -161,10 +166,10 @@ public class NumberIndicator extends LinearLayout implements IndicatorAble {
             return path;
         // 防止边过宽,完全遮挡内容.
         int minWidth = r.width() > r.height() ? r.height() : r.width();
-        if (minWidth <= 0){
+        if (minWidth <= 0) {
             return null;
         }
-        if (mStrokeWidth >= minWidth / 2){
+        if (mStrokeWidth >= minWidth / 2) {
             mStrokeWidth = minWidth / 2.5f;
         }
         Path p = new Path();
