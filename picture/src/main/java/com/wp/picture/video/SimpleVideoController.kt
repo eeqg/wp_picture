@@ -73,10 +73,10 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
         }
         ivPlayState.setOnClickListener { startPlay() }
         ivStartOrPause.setOnClickListener {
-            if (mVideoView.getVideoState() == SimpleVideoView.STATE_IDLE) {
-                startPlay()
-                return@setOnClickListener
-            }
+//            if (mVideoView.getVideoState() == SimpleVideoView.STATE_IDLE) {
+//                startPlay()
+//                return@setOnClickListener
+//            }
             if (mVideoView.isPlaying()) {
                 pausePlay()
             } else {

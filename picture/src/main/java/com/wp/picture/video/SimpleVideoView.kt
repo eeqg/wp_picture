@@ -301,8 +301,13 @@ class SimpleVideoView @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
                 STATE_STOPPED -> {
                     mMediaPlayer!!.prepareAsync()
+                    setState(STATE_PREPARING)
                 }
-                else -> {
+                STATE_COMPLETED -> {
+                    mMediaPlayer!!.start()
+                    setState(STATE_PLAYING)
+                }
+                STATE_ERROR -> {
                     printLog("error")
                     initMediaPlayer(Surface(mSurfaceTexture))
                 }
