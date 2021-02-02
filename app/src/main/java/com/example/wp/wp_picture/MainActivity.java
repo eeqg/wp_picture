@@ -45,6 +45,7 @@ import com.wp.picture.video.SimpleVideoView;
 import com.wp.picture.widget.CommonViewPager;
 import com.wp.picture.widget.SimpleFloating;
 import com.wp.picture.widget.StarView;
+import com.wp.picture.widget.TagLayoutView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         observeWithVideo();
 
         observeStarView();
+        observeTagLayout();
 
         //floating view.
         TextView textView = new TextView(this);
@@ -331,6 +333,34 @@ public class MainActivity extends AppCompatActivity {
                 android.util.Log.d("test", "-----" + score);
             }
         });
+    }
+
+    private void observeTagLayout() {
+        ArrayList<String> dataList = new ArrayList<>();
+        dataList.add("sku1");
+        dataList.add("sku2");
+        dataList.add("sku3");
+
+        final TagListAdapter tagListAdapter = new TagListAdapter(this);
+        tagListAdapter.setOnTagClickListener(new TagLayoutView.TagViewAdapter.OnTagClickListener() {
+            @Override
+            public void onClicked(int position) {
+                tagListAdapter.setCurrentPosition(position);
+            }
+        });
+        final TagLayoutView tagLayoutView = findViewById(R.id.tagLayoutView);
+        tagLayoutView.setAdapter(tagListAdapter);
+
+        tagListAdapter.setTagList(dataList);
+
+//        tagLayoutView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d("test", "----getWidth = "+tagLayoutView.getWidth());
+//                Log.d("test", "----getMeasuredWidth = "+tagLayoutView.getMeasuredWidth());
+//                tagLayoutView.requestLayout();
+//            }
+//        });
     }
 
     @Override

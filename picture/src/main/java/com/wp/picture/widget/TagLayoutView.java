@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by wp on 2019/5/5.
  */
 public class TagLayoutView extends ViewGroup {
-    private final String TAG = "TagLayoutView";
+    private static final String TAG = "TagLayoutView";
 
     private TagViewAdapter tagAdapter;
     private DataChangeObserve dataChangeObserve;
@@ -26,6 +27,7 @@ public class TagLayoutView extends ViewGroup {
 
     private int tagSpace;
     private int rowSpace;
+    private static boolean debug = false;
 
     public TagLayoutView(Context context) {
         this(context, null);
@@ -144,6 +146,10 @@ public class TagLayoutView extends ViewGroup {
         }
     }
 
+    public TagViewAdapter getAdapter(){
+        return tagAdapter;
+    }
+
     // public void setOnTagClickListener(OnTagClickListener listener) {
     // 	this.tagClickListener = listener;
     // }
@@ -151,7 +157,7 @@ public class TagLayoutView extends ViewGroup {
     private class DataChangeObserve extends DataSetObserver {
         @Override
         public void onChanged() {
-            // LogUtils.d(TAG, "-----onChanged()--");
+            print("-----onChanged()--");
             addTagView();
         }
     }
@@ -161,13 +167,13 @@ public class TagLayoutView extends ViewGroup {
         private List<T> tagList;
         private OnTagClickListener tagClickListener;
 
-        private int currentPosition = -1;
+        protected int currentPosition = -1;
 
         public TagViewAdapter() {
         }
 
         public void setTagList(List<T> list) {
-            // LogUtils.d("TagLayoutView", "-----setTagList()--" + list.size());
+             print("-----setTagList()--" + list.size());
             this.tagList = list;
             notifyDataSetChanged();
         }
@@ -247,6 +253,10 @@ public class TagLayoutView extends ViewGroup {
         public interface OnTagClickListener {
             void onClicked(int position);
         }
+    }
+
+    private static void print(String text){
+        if (debug) Log.d(TAG, text);
     }
 
     private float dp2px(float dp) {
