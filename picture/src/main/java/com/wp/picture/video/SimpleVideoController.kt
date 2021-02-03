@@ -123,6 +123,9 @@ class SimpleVideoController(context: Context) : FrameLayout(context), VideoContr
     override fun setVideoInfo(videoInfo: SimpleVideoView.VideoInfo) {
         if (videoInfo.videoThumb.isNotEmpty()) {
             mVideoView.getImageLoader()?.displayThumb(ivThumb, videoInfo.videoThumb)
+        } else {
+            if (videoInfo.videoUrl.isNotEmpty())
+                mVideoView.getImageLoader()?.displayThumbFame(ivThumb, videoInfo.videoUrl)
         }
         tvTitle.text = videoInfo.title
     }

@@ -7,4 +7,6 @@ import android.widget.ImageView
  */
 interface ImageLoader {
     fun displayThumb(imageView: ImageView, url: String)
+
+    fun displayThumbFame(imageView: ImageView, url: String)
 }

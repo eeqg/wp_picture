@@ -17,6 +17,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.wp.wp_picture.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
@@ -132,7 +134,19 @@ public class GlideImageLoader implements ImageLoader, com.wp.picture.video.Image
     }
 
     @Override
-    public void displayThumb(ImageView imageView, String url) {
+    public void displayThumb(@NotNull ImageView imageView, @NotNull String url) {
         load(imageView, url);
+    }
+
+    @Override
+    public void displayThumbFame(@NotNull ImageView imageView, @NotNull String url) {
+        Glide.with(imageView.getContext())
+                .setDefaultRequestOptions(
+                        new RequestOptions()
+                                .frame(1000000)
+                                .centerCrop()
+                )
+                .load(url)
+                .into(imageView);
     }
 }

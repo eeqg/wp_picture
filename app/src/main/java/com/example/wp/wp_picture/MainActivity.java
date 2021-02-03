@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                             view.addView(simpleVideoView);
                             SimpleVideoView.VideoInfo videoInfo = new SimpleVideoView.VideoInfo(
                                     videoUrl3
-                                    , "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-10_10-09-58.jpg",
+                                    , "",
                                     "title");
                             simpleVideoView.setImageLoader(GlideImageLoader.getInstance()).setup(videoInfo);
                         } else {
